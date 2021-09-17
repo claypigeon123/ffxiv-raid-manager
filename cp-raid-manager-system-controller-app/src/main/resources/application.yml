@@ -1,0 +1,42 @@
+server:
+    port: 9000
+spring:
+    application:
+        name: cp-raid-manager-system-controller-app
+    main:
+        allow-bean-definition-overriding: true
+        web-application-type: reactive
+    couchbase:
+        connection-string: localhost
+        username: user
+        password: password
+    data:
+        couchbase:
+            bucket-name: RAID_MANAGER_AGGREGATES
+            repositories:
+                type: reactive
+
+---
+
+raid-manager:
+    security:
+        allow-credentials: true
+        allowed-origins:
+            - http://localhost:3000
+        allowed-methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - OPTIONS
+        allowed-headers:
+            - Content-Type
+            - Authorization
+        exposed-headers:
+            - Content-Type
+            - Authorization
+        jwt:
+            header-key: Authorization
+            prefix: "Bearer "
+            expiration: 604800
+            secret: superXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecret

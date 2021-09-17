@@ -1,0 +1,81 @@
+package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
+
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ConfirmSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.CreateRaidRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RaidSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.UnconfirmSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.RaidService;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+@Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/raids")
+public class RaidController {
+    private final Logger log = LoggerFactory.getLogger(RaidController.class);
+
+    private final RaidService raidService;
+
+    @GetMapping("/current")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<GetRaidsResponse> getCurrentRaids() {
+        log.info("Request to get current raids");
+        return raidService.getCurrentRaids();
+    }
+
+    @GetMapping("/old")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<GetRaidsResponse> getOldRaids(
+        @RequestParam(required = false) Integer limit,
+        @RequestParam(required = false) Integer offset
+    ) {
+        log.info("Request to get old raids");
+        return raidService.getOldRaids(limit, offset);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<RaidAggregate> createRaid(@RequestBody CreateRaidRequest request, ServerWebExchange ex) {
+        log.info("Request to create new raid");
+        return raidService.createRaid(request, ex.getAttribute("requesterId"));
+    }
+
+    @PutMapping("/{raidId}/signup")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<RaidAggregate> signup(@PathVariable String raidId, @RequestBody RaidSignupRequest request, ServerWebExchange ex) {
+        String requester = ex.getAttribute("requesterId");
+        log.info("Request from {} to sign up for raid {}", requester, raidId);
+        return raidService.signup(raidId, request, requester);
+    }
+
+    @PutMapping("/{raidId}/signoff")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<RaidAggregate> signoff(@PathVariable String raidId, ServerWebExchange ex) {
+        String requester = ex.getAttribute("requesterId");
+        log.info("Request from {} to sign off from raid {}", requester, raidId);
+        return raidService.signoff(raidId, requester);
+    }
+
+    @PutMapping("/{raidId}/confirm-signup")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody ConfirmSignupRequest request) {
+        log.info("Request to confirm signup of {} on raid {} as {}", request.getUserId(), raidId, request.getJob());
+        return raidService.confirmSignup(raidId, request);
+    }
+
+    @PutMapping("/{raidId}/unconfirm-signup")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody UnconfirmSignupRequest request) {
+        log.info("Request to unconfirm signup of {} on raid {}", request.getUserId(), raidId);
+        return raidService.unconfirmSignup(raidId, request);
+    }
+}
