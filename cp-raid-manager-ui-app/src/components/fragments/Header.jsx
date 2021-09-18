@@ -10,7 +10,6 @@ import { logoutAction } from '../../redux/actions/Actions';
 export const Header = ({ setSidebarStatus }) => {
 
     const dispatch = useDispatch();
-    const loggedIn = useSelector(state => state.loggedIn);
     const user = useSelector(state => state.user);
 
     const logout = () => {

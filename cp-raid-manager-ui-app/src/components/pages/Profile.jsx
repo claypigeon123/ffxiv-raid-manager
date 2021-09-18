@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useAlert } from 'react-alert';
 import { Form, Button, Col } from 'react-bootstrap';
-import { FaUser, FaLockOpen, FaSave, FaTrashAlt, FaServer, FaIdCard } from 'react-icons/fa';
+import { FaUser, FaLockOpen, FaSave, FaTrashAlt, FaServer } from 'react-icons/fa';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';

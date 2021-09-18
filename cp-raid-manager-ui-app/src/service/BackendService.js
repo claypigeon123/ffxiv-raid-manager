@@ -1,10 +1,13 @@
 import axios from 'axios';
 import {
-    makeUri,
+    //makeUri,
     AUTH, RENEW,
-    CHANGE_USER_DETAILS
+    CHANGE_USER_DETAILS,
+    GET_UPCOMING_RAIDS,
+    GET_OLD_RAIDS
 } from './URIs';
 
+// Auth & related
 const auth = (payload) => {
     return axios.post(AUTH, payload).then(res => {
         return {
@@ -31,6 +34,7 @@ const renew = (token) => {
     })
 }
 
+// Users
 const changeUserDetails = (payload) => {
     return axios.put(CHANGE_USER_DETAILS, payload).then(res => {
         return res.data;
@@ -39,9 +43,27 @@ const changeUserDetails = (payload) => {
     });
 }
 
+// Raids
+const getUpcomingRaids = () => {
+    return axios.get(GET_UPCOMING_RAIDS).then(res => {
+        return res.data.documents;
+    }).catch(err => {
+        throw Error(err.message);
+    })
+}
+
+const getOldRaids = () => {
+    return axios.get(GET_OLD_RAIDS).then(res => {
+        return res.data.documents;
+    }).catch(err => {
+        throw Error(err.message);
+    })
+}
+
 const service = {
     auth, renew,
-    changeUserDetails
+    changeUserDetails,
+    getUpcomingRaids, getOldRaids
 }
 
 export default service;

@@ -1,6 +1,6 @@
 
 
-export const RaidView = () => {
+export const RaidModal = () => {
     return (
         <div>
             

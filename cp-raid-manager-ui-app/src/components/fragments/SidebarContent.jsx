@@ -17,20 +17,20 @@ export const SidebarContent = ({ setSidebarStatus, role }) => {
 
                 <SidebarNavHeader name="Profile" />
                 <Nav className="navbar-nav mr-auto mb-3">
-                    <SidebarNavItem exact to="/profile" name="Profile" icon={<FaUser size="20" />} />
+                    <SidebarNavItem exact to="/profile" name="Profile" icon={<FaUser size="20" onClick={closeSidebar} />} />
                 </Nav>
 
                 <SidebarNavHeader name="Raids" />
                 <Nav className="navbar-nav mr-auto mb-3">
-                    <SidebarNavItem exact to="/raids/upcoming" name="Upcoming Raids" icon={<GiCrossedSwords size="20" />} />
-                    <SidebarNavItem exact to="/raids/old" name="Old Raids" icon={<FaArchive size="20" />} />
+                    <SidebarNavItem exact to="/raids/upcoming" name="Upcoming Raids" icon={<GiCrossedSwords size="20" onClick={closeSidebar} />} />
+                    <SidebarNavItem exact to="/raids/old" name="Old Raids" icon={<FaArchive size="20" onClick={closeSidebar} />} />
                 </Nav>
 
                 { (role === "ADMIN" || role === "RAID_LEADER") &&
                 <>
                     <SidebarNavHeader name="Raid Leader" />
                     <Nav className="navbar-nav mr-auto mb-3">
-                        <SidebarNavItem exact to="/raids/new" name="Post New" icon={<FaCalendarPlus size="20" />} />
+                        <SidebarNavItem exact to="/raids/new" name="Post New" icon={<FaCalendarPlus size="20" onClick={closeSidebar} />} />
                     </Nav>
                 </>}
             </div>

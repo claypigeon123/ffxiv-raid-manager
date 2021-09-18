@@ -148,3 +148,15 @@ body {
     background-color: rgb(48, 48, 48) !important;
     color: rgb(138, 138, 138) !important;
 }
+
+.table-row {
+    cursor: pointer;
+    margin-bottom: 5px;
+    background-color: #22262e;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.table-row:hover {
+    background-color: #383d47;
+}

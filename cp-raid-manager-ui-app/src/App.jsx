@@ -10,13 +10,11 @@ import { renewAction, checkSessionAction } from "./redux/actions/Actions";
 
 import { Header } from "./components/fragments/Header";
 import { SidebarContent } from "./components/fragments/SidebarContent";
-import { PageContainer } from "./components/fragments/PageContainer";
 import { Home } from "./components/pages/Home";
 import { Profile } from "./components/pages/Profile";
 import { UpcomingRaids } from "./components/pages/UpcomingRaids";
 import { OldRaids } from "./components/pages/OldRaids";
 import { NewRaid } from "./components/pages/NewRaid";
-import { RaidView } from "./components/pages/RaidView";
 
 
 const mql = window.matchMedia(`(min-width: 992px)`);
@@ -81,7 +79,6 @@ export const App = () => {
                 <Header setSidebarStatus={setSidebarStatus} />
                 <Container className="px-0">
                     <Switch>
-                        <Route exact path="/raids/{raidId}" render={(props) => <RaidView {...props} />} />
                         <Route exact path="/raids/new" render={(props) => <NewRaid {...props} />} />
                         <Route exact path="/raids/upcoming" render={(props) => <UpcomingRaids {...props} />} />
                         <Route exact path="/raids/old" render={(props) => <OldRaids {...props} />} />
