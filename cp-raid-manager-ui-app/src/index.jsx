@@ -10,6 +10,9 @@ import { InfoIcon, SuccessIcon, ErrorIcon, CloseIcon } from './assets/img/Icons'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-toggle/style.css';
 import './assets/css/global.css';
+import axios from 'axios';
+
+axios.defaults.baseURL = "http://localhost:9000";
 
 const store = configureStore();
 

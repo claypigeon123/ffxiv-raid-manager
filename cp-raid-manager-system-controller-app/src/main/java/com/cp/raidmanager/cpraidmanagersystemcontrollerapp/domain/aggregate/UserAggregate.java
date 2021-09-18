@@ -24,6 +24,8 @@ public class UserAggregate {
     @JsonIgnore
     private String password;
 
+    private String server;
+
     private String inGameName;
 
     private Role role;
@@ -36,6 +38,7 @@ public class UserAggregate {
             .password(request.getPassword())
             .username(request.getUsername())
             .password(hash)
+            .server(request.getServer())
             .inGameName(request.getInGameName())
             .role(Role.USER)
             .build();

@@ -24,7 +24,7 @@ export const PageContainer = ({ title, icon, tip, delay = 10, infotext, children
     return (
         <Container fluid className={`bg-container mb-5 mt-5 py-3 rounded shadow anim-400 ${anim}`}>
             <>
-            <PageContainerTitle title={title} icon={icon} tip={tip} infotext={infotext} />
+            {title && <PageContainerTitle title={title} icon={icon} tip={tip} infotext={infotext} />}
             <div>
                 {children}
             </div>

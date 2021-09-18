@@ -32,8 +32,14 @@ public class PublicService {
 
     public Mono<ResponseEntity<UserAggregate>> auth(AuthRequest request) {
         return userDao.findOne(query(where("username").is(request.getUsername())))
-            .switchIfEmpty(Mono.error(new UnauthorizedException()))
+            .switchIfEmpty(Mono.error(new UnauthorizedException("Incorrect username or password")))
             .flatMap(aggregate -> verifyPassword(request.getPassword(), aggregate))
+            .switchIfEmpty(Mono.error(new UnauthorizedException("Incorrect username or password")))
+            .flatMap(this::generateTokenIntoEntity);
+    }
+
+    public Mono<ResponseEntity<UserAggregate>> renew(String id) {
+        return userDao.findOne(query(where("username").is(id)))
             .switchIfEmpty(Mono.error(new UnauthorizedException()))
             .flatMap(this::generateTokenIntoEntity);
     }

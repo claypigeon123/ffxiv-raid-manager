@@ -1,5 +1,5 @@
 import { NavItem } from "react-bootstrap";
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 
 export const SidebarNavItem = ({ to, name, icon, onClick, exact = false }) => {
     return (
