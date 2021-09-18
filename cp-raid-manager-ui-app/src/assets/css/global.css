@@ -1,0 +1,7 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+    background-color: rgb(37, 37, 37);
+    color: rgb(212, 220, 233);
+}
