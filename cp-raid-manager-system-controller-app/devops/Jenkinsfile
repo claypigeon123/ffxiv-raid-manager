@@ -1,0 +1,29 @@
+
+pipeline {
+
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
+    stages {
+        stage ('Preparation') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+
+        stage ('Maven package') {
+            steps {
+                sh 'mvn --version'
+            }
+        }
+    }
+}
