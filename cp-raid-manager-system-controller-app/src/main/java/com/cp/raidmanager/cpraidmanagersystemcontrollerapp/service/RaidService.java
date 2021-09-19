@@ -9,6 +9,7 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.Confir
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.CreateRaidRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RaidSignupRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.UnconfirmSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
@@ -23,8 +24,10 @@ import reactor.util.function.Tuple3;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Map;
 
+import static org.springframework.data.couchbase.core.query.Query.query;
 import static org.springframework.data.couchbase.core.query.QueryCriteria.where;
 
 @Service
@@ -40,7 +43,7 @@ public class RaidService {
         Query query = new Query();
 
         query.addCriteria(where("raidDateTime").gte(OffsetDateTime.now(clock).format(dtf)));
-        query.with(Sort.by("createdDate").descending());
+        query.with(Sort.by("raidDateTime").descending());
 
         return raidDao.query(query)
             .collectList()
@@ -53,11 +56,28 @@ public class RaidService {
         query.addCriteria(where("raidDateTime").lte(OffsetDateTime.now(clock).format(dtf)));
         query.limit(limit == null ? 20 : limit);
         query.skip(offset == null ? 0 : offset);
-        query.with(Sort.by("createdDate").descending());
+        query.with(Sort.by("raidDateTime").descending());
 
         return raidDao.query(query)
             .collectList()
             .map(GetRaidsResponse::new);
+    }
+
+    public Mono<GetRaidResponse> getRaid(String id) {
+        return raidDao.findById(id)
+            .switchIfEmpty(Mono.error(new AggregateNotFoundException()))
+            .zipWhen(raid -> {
+                var signups = raid.getSignups().keySet();
+                if (signups.isEmpty()) {
+                    return Mono.just(new ArrayList<UserAggregate>());
+                }
+                return userDao.query(query(where("meta().id").in(signups.toArray()))).collectList();
+            })
+            .map(tuple2 -> GetRaidResponse.builder()
+                .raid(tuple2.getT1())
+                .users(tuple2.getT2())
+                .build()
+            );
     }
 
     public Mono<RaidAggregate> createRaid(CreateRaidRequest request, String createdBy) {
@@ -116,6 +136,10 @@ public class RaidService {
 
         if (signups.containsKey(id)) {
             signup.setSignupDate(signups.get(id).getSignupDate());
+        }
+
+        if (request.getAlternates().contains(request.getPreference())) {
+            signup.getAlternates().remove(request.getPreference());
         }
 
         signups.put(id, signup);

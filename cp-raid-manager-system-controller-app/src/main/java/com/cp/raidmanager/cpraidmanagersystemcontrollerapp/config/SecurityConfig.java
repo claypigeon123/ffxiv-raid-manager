@@ -1,5 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config;
 
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.AppProperties;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.JwtProperties;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.SecurityProperties;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -18,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.time.Duration;
 
 import static com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.Role.*;
 
@@ -36,7 +39,8 @@ public class SecurityConfig {
         ServerHttpSecurity http,
         JwtReactiveAuthenticationManager manager,
         JwtReactiveSecurityContextRepository ctxRepo,
-        SecurityProperties securityProperties
+        SecurityProperties securityProperties,
+        AppProperties appProperties
     ) {
         return http
             .cors().configurationSource(corsConfigurationSource(securityProperties)).and()
@@ -51,6 +55,12 @@ public class SecurityConfig {
             )
             .and()
 
+            .addFilterBefore((ex, ch) -> Mono.just(ex)
+                    .delayElement(Duration.ofMillis(appProperties.getArtificialDelayMs()))
+                    .flatMap(ch::filter),
+                SecurityWebFiltersOrder.FIRST
+            )
+
             .authenticationManager(manager)
             .securityContextRepository(ctxRepo)
 
@@ -62,12 +72,12 @@ public class SecurityConfig {
 
                 .pathMatchers(HttpMethod.POST,
                     "/api/raids"
-                ).hasAnyRole(RAID_LEADER.toString(), ADMIN.toString())
+                ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
 
                 .pathMatchers(HttpMethod.PUT,
                     "/api/raids/*/confirm-signup",
                     "/api/raids/*/unconfirm-signup"
-                ).hasAnyRole(RAID_LEADER.toString(), ADMIN.toString())
+                ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
 
                 .anyExchange().authenticated()
             )

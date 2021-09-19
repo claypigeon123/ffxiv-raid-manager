@@ -3,7 +3,7 @@ import { Container } from "react-bootstrap";
 import { PageContainerTitle } from "../elements/PageContainerTitle";
 
 
-export const PageContainer = ({ title, icon, tip, delay = 10, infotext, children }) => {
+export const PageContainer = ({ title, icon, tip, delay = 10, infotext, children, classNames }) => {
 
     const [anim, setAnim] = useState("animated-container");
 
@@ -22,7 +22,7 @@ export const PageContainer = ({ title, icon, tip, delay = 10, infotext, children
     }, [delay]);
 
     return (
-        <Container fluid className={`bg-container mb-5 mt-5 py-3 rounded shadow anim-400 ${anim}`}>
+        <Container fluid className={`bg-container mb-5 mt-5 py-3 rounded shadow anim-400 ${anim} ${classNames}`}>
             <>
             {title && <PageContainerTitle title={title} icon={icon} tip={tip} infotext={infotext} />}
             <div>

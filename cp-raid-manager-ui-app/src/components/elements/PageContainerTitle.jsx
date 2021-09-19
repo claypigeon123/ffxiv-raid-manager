@@ -3,9 +3,9 @@ export const PageContainerTitle = ({ title, icon, tip, infotext }) => {
     return (
         <div className="mb-4">
             <div className="mb-0 pb-1 d-flex h4 border-bottom border-dodo text-dodo-light">
-                <div className="mb-0 mr-1 text-dodo-light">
+                { icon && <div className="mb-0 mr-1 text-dodo-light">
                     {icon}
-                </div>
+                </div> }
                 <div className="mb-0 ml-1">
                     {title}
                 </div>

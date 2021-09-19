@@ -62,7 +62,12 @@ export const App = () => {
     }
 
     if (userData.user === undefined || userData.token === undefined || userData.loggedIn === false) {
-        return <LoginPage />
+        return (
+        <>
+            {loading && <LoadingSpinner />}
+            <LoginPage />
+        </>
+        )
     }
 
     return (

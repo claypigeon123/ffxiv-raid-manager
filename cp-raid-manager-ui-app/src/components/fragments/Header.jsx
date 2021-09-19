@@ -21,7 +21,8 @@ export const Header = ({ setSidebarStatus }) => {
             <Button variant="outline-light" onClick={() => { setSidebarStatus(true) }} className="d-lg-none ml-0 ml-lg-3">
                 <GiHamburgerMenu size="17" />
             </Button>
-            <DodoLogo height={60} className="mr-auto py-2" />
+            <DodoLogo height={60} className="py-2 mr-auto mr-lg-3 ml-2" />
+            <div className="mr-auto text-dodo-header d-none d-lg-block"> Dodo Raid Manager </div>
             <div className="align-self-center d-flex py-0 pe-3">
                 <div className="d-flex">
                     <div className="align-self-center mr-4 d-none d-md-inline"> Logged in as <span className="text-dodo-bolder">{user?.username}</span> </div>

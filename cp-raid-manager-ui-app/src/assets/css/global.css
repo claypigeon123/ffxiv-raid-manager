@@ -37,7 +37,7 @@ body {
 }
 
 .text-dodo {
-    color: #1076a5 !important;
+    color: #1d88b9 !important;
 }
 
 .text-dodo-light {
@@ -45,15 +45,20 @@ body {
 }
 
 .text-dodo-bold {
-    color: #1076a5 !important;
+    color: #1d88b9 !important;
     font-weight: 600;
     font-size: large;
 }
 
 .text-dodo-bolder {
-    color: #1076a5 !important;
+    color: #1d88b9 !important;
     font-weight: 600;
     font-size: larger;
+}
+
+.text-dodo-header {
+    font-weight: 600;
+    font-size: x-large;
 }
 
 .bg-dodo {
@@ -75,7 +80,7 @@ body {
     outline: none;
 }
 
-.btn-dodo:disabled {
+.btn-dodo:disabled, .btn-outline-dodo:disabled {
     background: rgb(48, 48, 48) !important;
     border-color: #03141b !important;
 }
@@ -159,4 +164,81 @@ body {
 
 .table-row:hover {
     background-color: #383d47;
+}
+
+.signup-row {
+    margin-bottom: 5px;
+    background-color: #22262e;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+.bg-very-dark {
+    background-color: #22262e;
+}
+
+.react-datetime-picker__wrapper, .react-datetime-picker__inputGroup__input, .react-datetime-picker__inputGroup > input, .react-datetime-picker__button {
+    border: none;
+    color: white;
+}
+
+.react-datetime-picker__inputGroup__input > option {
+    color: black;
+}
+
+.react-datetime-picker__calendar--open {
+    top: 100% !important;
+    bottom: unset !important;
+}
+
+.transparent-bg-modal {
+    background: rgba(0,0,0,0.4);
+    border: none;
+}
+
+.refresh-container {
+    z-index: 40000;
+    position: fixed;
+    bottom: 2rem;
+    right: 3rem;
+}
+
+.small-spinner {
+    animation: spin infinite 1.2s linear;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.job-icon {
+    cursor: pointer;
+}
+
+.job-icon:hover {
+    transform: scale(1.02);
+    background-color: #006797;
+    border-radius: 20px;
+}
+
+.job-not-selected:hover {
+    filter: none;
+}
+
+.job-not-selected {
+    filter: brightness(30%) blur(0.6px);
+}
+
+.job-selected {
+    background-color: #00aeff;
+    border-radius: 20px;
+}
+
+.job-selected:hover {
+    background-color: #00aeff;
 }

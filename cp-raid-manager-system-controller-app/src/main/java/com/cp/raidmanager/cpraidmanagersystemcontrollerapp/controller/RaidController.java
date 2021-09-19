@@ -5,6 +5,7 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.Confir
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.CreateRaidRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RaidSignupRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.UnconfirmSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.RaidService;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,14 @@ public class RaidController {
 
     private final RaidService raidService;
 
-    @GetMapping("/current")
+    @GetMapping("/query/current")
     @ResponseStatus(HttpStatus.OK)
     public Mono<GetRaidsResponse> getCurrentRaids() {
         log.info("Request to get current raids");
         return raidService.getCurrentRaids();
     }
 
-    @GetMapping("/old")
+    @GetMapping("/query/old")
     @ResponseStatus(HttpStatus.OK)
     public Mono<GetRaidsResponse> getOldRaids(
         @RequestParam(required = false) Integer limit,
@@ -42,11 +43,19 @@ public class RaidController {
         return raidService.getOldRaids(limit, offset);
     }
 
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<GetRaidResponse> getRaid(@PathVariable String id) {
+        log.info("Request to get raid {}", id);
+        return raidService.getRaid(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<RaidAggregate> createRaid(@RequestBody CreateRaidRequest request, ServerWebExchange ex) {
-        log.info("Request to create new raid");
-        return raidService.createRaid(request, ex.getAttribute("requesterId"));
+        String id = ex.getAttribute("requesterId");
+        log.info("Request to create new raid by [{}]", id);
+        return raidService.createRaid(request, id);
     }
 
     @PutMapping("/{raidId}/signup")

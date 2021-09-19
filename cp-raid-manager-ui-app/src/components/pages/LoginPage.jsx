@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Form, Col, Button } from "react-bootstrap";
 import { DodoLogo } from "../elements/DodoLogo";
 import { PageContainer } from "../fragments/PageContainer";
-import { FaLock, FaIdCardAlt, FaLockOpen } from 'react-icons/fa';
+import { FaLock, FaIdCardAlt, FaLockOpen, FaCrow, FaSignInAlt } from 'react-icons/fa';
 import { ControlledFormTextbox } from "../elements/ControlledFormTextbox";
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,7 +50,7 @@ export const LoginPage = () => {
     }
 
     const mountAdvice = () => {
-        if (displayAdvice < 80) setDisplayAdvice(displayAdvice + 1);
+        if (displayAdvice < 100) setDisplayAdvice(displayAdvice + 1);
     }
 
     return (
@@ -73,10 +73,10 @@ export const LoginPage = () => {
                     </Form.Row>
                     <Form.Row className="justify-content-center mt-4">
                         <Col lg="3">
-                            <Button type="submit" block className="btn-dodo">Login</Button>
+                            <Button type="submit" block className="btn-dodo"> <FaSignInAlt size="20" /> Login </Button>
                         </Col>
                         <Col className="mt-4 mt-lg-0" lg="3">
-                            <Button onClick={mountAdvice} block className="btn-outline-dodo">Request Access</Button>
+                            <Button disabled={displayAdvice >= 100} onClick={mountAdvice} block className="btn-outline-dodo"> <FaCrow size="20" /> Request Access </Button>
                         </Col>
                     </Form.Row>
                 </Form>
@@ -122,9 +122,14 @@ export const LoginPage = () => {
                     You can stop now, there won't be any more.
                 </PageContainer>
             }
-            {displayAdvice === 80 &&
+            {displayAdvice >= 80 && displayAdvice < 100 &&
                 <PageContainer>
                     No, really. This is the last message you'll get.
+                </PageContainer>
+            }
+            {displayAdvice === 100 &&
+                <PageContainer>
+                    Fine, I'll just disable it. Boomer destroyed.
                 </PageContainer>
             }
         </Container>

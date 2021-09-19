@@ -35,8 +35,10 @@ raid-manager:
         exposed-headers:
             - Content-Type
             - Authorization
-        jwt:
-            header-key: Authorization
-            prefix: "Bearer "
-            expiration: 604800
-            secret: superXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecret
+    jwt:
+        header-key: Authorization
+        prefix: "Bearer "
+        expiration: 604800
+        secret: superXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecretXsuperXsecureXdevXsecret
+    app:
+        artificial-delay-ms: 1000

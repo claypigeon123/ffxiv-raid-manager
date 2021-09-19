@@ -1,6 +1,7 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.JwtProperties;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.SecurityProperties;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.AuthRequest;

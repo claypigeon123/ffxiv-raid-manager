@@ -12,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Validated
 @RestController
@@ -28,6 +31,13 @@ public class UserController {
     public Mono<UserAggregate> findOne(@PathVariable String id) {
         log.info("Request to get user by id: {}", id);
         return service.findOne(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Flux<UserAggregate> batchFind(@RequestBody List<String> ids) {
+        log.info("Request to batch get users");
+        return service.batchFind(ids);
     }
 
     @PostMapping("/register")

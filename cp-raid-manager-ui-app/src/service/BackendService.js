@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {
-    //makeUri,
+    makeUri,
     AUTH, RENEW,
-    CHANGE_USER_DETAILS,
-    GET_UPCOMING_RAIDS,
-    GET_OLD_RAIDS
+    GET_USER, CHANGE_USER_DETAILS,
+    GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, BATCH_GET_USERS, GET_RAID,
+    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID
 } from './URIs';
 
 // Auth & related
@@ -15,7 +15,7 @@ const auth = (payload) => {
             token: res.headers.authorization
         }
     }).catch(err => {
-        throw Error(`${err.response.data.msg}!`);
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
     })
 }
 
@@ -30,16 +30,33 @@ const renew = (token) => {
             token: res.headers.authorization
         }
     }).catch(err => {
-        throw Error(`${err.response.data.msg}!`);
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
     })
 }
 
 // Users
+const getUser = (id) => {
+    const uri = makeUri(GET_USER, [{name: "id", value: id}]);
+    return axios.get(uri).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    });
+}
+
+const batchGetUsers = (ids) => {
+    return axios.post(BATCH_GET_USERS, ids).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
 const changeUserDetails = (payload) => {
     return axios.put(CHANGE_USER_DETAILS, payload).then(res => {
         return res.data;
     }).catch(err => {
-        throw Error(err.message);
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
     });
 }
 
@@ -48,7 +65,7 @@ const getUpcomingRaids = () => {
     return axios.get(GET_UPCOMING_RAIDS).then(res => {
         return res.data.documents;
     }).catch(err => {
-        throw Error(err.message);
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
     })
 }
 
@@ -56,14 +73,50 @@ const getOldRaids = () => {
     return axios.get(GET_OLD_RAIDS).then(res => {
         return res.data.documents;
     }).catch(err => {
-        throw Error(err.message);
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const getRaid = (id) => {
+    const uri = makeUri(GET_RAID, [{ name: "id", value: id }]);
+    return axios.get(uri).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    });
+}
+
+const createRaid = (payload) => {
+    return axios.post(CREATE_RAID, payload).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const signupForRaid = (id, payload) => {
+    const uri = makeUri(SIGNUP_FOR_RAID, [{ name: "id", value: id }]);
+    return axios.put(uri, payload).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const signoffFromRaid = (id) => {
+    const uri = makeUri(SIGNOFF_FROM_RAID, [{ name: "id", value: id }]);
+    return axios.put(uri, undefined).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
     })
 }
 
 const service = {
     auth, renew,
-    changeUserDetails,
-    getUpcomingRaids, getOldRaids
+    getUser, batchGetUsers, changeUserDetails,
+    getUpcomingRaids, getOldRaids, getRaid, createRaid,
+    signupForRaid, signoffFromRaid
 }
 
 export default service;

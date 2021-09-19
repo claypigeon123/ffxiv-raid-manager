@@ -7,20 +7,18 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.Regist
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.UriBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
+import java.util.List;
+
+import static org.springframework.data.couchbase.core.query.Query.query;
+import static org.springframework.data.couchbase.core.query.QueryCriteria.where;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +30,10 @@ public class UserService {
 
     public Mono<UserAggregate> findOne(String value) {
         return userDao.findById(value);
+    }
+
+    public Flux<UserAggregate> batchFind(List<String> ids) {
+        return userDao.query(query(where("meta().id").in(ids)));
     }
 
     public Mono<UserAggregate> register(RegisterRequest request) {
