@@ -24,6 +24,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'mvn -f cp-raid-manager-system-controller-app/pom.xml  clean package'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
