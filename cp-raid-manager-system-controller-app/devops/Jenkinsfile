@@ -22,7 +22,8 @@ pipeline {
 
         stage ('Maven package') {
             steps {
-                sh 'mvn --version'
+                sh 'pwd'
+                sh 'mvn -f cp-raid-manager-system-controller-app/pom.xml  clean package'
             }
         }
     }
