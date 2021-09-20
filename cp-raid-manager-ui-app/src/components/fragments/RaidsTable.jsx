@@ -1,10 +1,10 @@
 import { RaidTableRow } from "../elements/RaidTableRow";
 import { SmallSpinner } from '../elements/SmallSpinner';
 
-export const RaidsTable = ({ raids, setSelectedRaidId, loading }) => {
+export const RaidsTable = ({ raids, setSelectedRaidId, loading, small = false }) => {
 
     const drawTableRows = () => raids.map((item, index) => (
-        <RaidTableRow key={index} raid={item} open={() => setSelectedRaidId(item.id)}  />
+        <RaidTableRow key={index} raid={item} open={() => setSelectedRaidId(item.id)} small={small} />
     ));
 
     if (loading) {
@@ -12,7 +12,7 @@ export const RaidsTable = ({ raids, setSelectedRaidId, loading }) => {
     }
 
     if (!raids || raids.length === 0) {
-        return <div className="text-muted"> No upcoming raids found. </div>
+        return <div className="text-muted"> No raids found. </div>
     }
 
     return (
@@ -22,8 +22,8 @@ export const RaidsTable = ({ raids, setSelectedRaidId, loading }) => {
                     <div className="col"> Name </div>
                     <div className="col"> Date </div>
                     <div className="col"> Posted By </div>
-                    <div className="col"> Signups </div>
-                    <div className="col"> Confirmed Signups </div>
+                    { !small && <div className="col"> Signups </div>}
+                    { !small && <div className="col"> Confirmed Signups </div>}
                 </div>
                 <div>
                     {drawTableRows()}

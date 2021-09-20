@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
+import { FaLink } from 'react-icons/fa';
 
 import { formatDate } from "../../util/DateUtils"
 import { SignupTableRow } from '../elements/SignupTableRow';
@@ -10,7 +11,7 @@ import { SignupControls } from '../elements/SignupControls';
 import { useSelector } from 'react-redux';
 
 
-export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid }) => {
+export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid, old = false }) => {
 
     const user = useSelector(state => state.user);
 
@@ -35,13 +36,33 @@ export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid 
         return <ConfirmedSignupTableRow key={index} signup={value} user={user} />
     });
 
+    const openLog = () => {
+        const link = document.createElement('a');
+        link.href = raid?.log;
+        link.setAttribute('target', '_blank');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    const displayRaidLog = () => raid?.log
+        ? <div> <Button onClick={openLog} className="btn-outline-dodo"> <FaLink size="20" /> Go to log </Button> </div>
+        : <div> No log attached yet. </div>
+
     if (loading) {
         return <SmallSpinner containerClassNames="text-dodo-light" />
     }
 
     return (
         <div>
-            <div className="text-dodo-bolder mb-3 border-bottom border-muted"> Information </div>
+            { old &&
+            <>
+            <div className="text-dodo-bolder mb-3 border-bottom border-muted"> Raid Log </div>
+            {displayRaidLog()}
+            </>
+            }
+
+            <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Information </div>
             <Row className="justify-content-around text-center">
                 <Col lg="4" >
                     <div className="bg-very-dark rounded border border-dodo py-1">
@@ -62,6 +83,7 @@ export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid 
                     </div>
                 </Col>
             </Row>
+            { !old &&
             <Row className="justify-content-around text-center mt-3">
                 <Col lg="2" >
                     <div className="bg-very-dark rounded border border-dodo py-1">
@@ -94,9 +116,14 @@ export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid 
                     </div>
                 </Col>
             </Row>
+            }
 
+            { !old &&
+            <>
             <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Controls </div>
-            <SignupControls raid={raid} isSignedUp={raid && Object.keys(raid?.signups).includes(user?.id)} signupForRaid={signupForRaid} signoffFromRaid={signoffFromRaid} />
+            <SignupControls raid={raid} isConfirmed={raid && Object.keys(raid?.confirmedSignups).includes(user?.id)} isSignedUp={raid && Object.keys(raid?.signups).includes(user?.id)} signupForRaid={signupForRaid} signoffFromRaid={signoffFromRaid} />
+            </>
+            }
 
             <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted">  Confirmed Signups </div>
             { raid && Object.keys(raid?.confirmedSignups).length === 0 

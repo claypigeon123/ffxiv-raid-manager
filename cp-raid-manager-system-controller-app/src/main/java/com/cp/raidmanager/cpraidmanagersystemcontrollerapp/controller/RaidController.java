@@ -1,10 +1,7 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ConfirmSignupRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.CreateRaidRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RaidSignupRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.UnconfirmSignupRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.*;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.RaidService;
@@ -86,5 +83,12 @@ public class RaidController {
     public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody UnconfirmSignupRequest request) {
         log.info("Request to unconfirm signup of {} on raid {}", request.getUserId(), raidId);
         return raidService.unconfirmSignup(raidId, request);
+    }
+
+    @PutMapping("/{raidId}/attach-log")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<RaidAggregate> attachLog(@PathVariable String raidId, @RequestBody AttachLogRequest request) {
+        log.info("Request to attach log to raid {}", raidId);
+        return raidService.attachLog(raidId, request.getLink());
     }
 }

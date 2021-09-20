@@ -64,8 +64,7 @@ public class RaidService {
     }
 
     public Mono<GetRaidResponse> getRaid(String id) {
-        return raidDao.findById(id)
-            .switchIfEmpty(Mono.error(new AggregateNotFoundException()))
+        return findRaid(id)
             .zipWhen(raid -> {
                 var signups = raid.getSignups().keySet();
                 if (signups.isEmpty()) {
@@ -103,6 +102,11 @@ public class RaidService {
     public Mono<RaidAggregate> unconfirmSignup(String raidId, UnconfirmSignupRequest request) {
         return findUserAndRaid(raidId, request.getUserId())
             .flatMap(tuple3 -> unconfirmSignupForRaid(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()));
+    }
+
+    public Mono<RaidAggregate> attachLog(String raidId, String link) {
+        return findRaid(raidId)
+            .flatMap(raid -> attachLogToRaid(raid, link));
     }
 
     // --- helpers ---
@@ -200,5 +204,10 @@ public class RaidService {
         raid.setUpdatedDate(now);
 
         return raidDao.upsert(raid);
+    }
+
+    private Mono<RaidAggregate> attachLogToRaid(RaidAggregate aggregate, String link) {
+        aggregate.setLog(link);
+        return raidDao.upsert(aggregate);
     }
 }

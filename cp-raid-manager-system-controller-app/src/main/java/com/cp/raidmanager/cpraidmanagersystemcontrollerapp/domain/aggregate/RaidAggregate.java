@@ -27,6 +27,8 @@ public class RaidAggregate {
 
     private String raidDateTime;
 
+    private String log;
+
     private Map<String, Signup> signups;
 
     private Map<String, ConfirmedSignup> confirmedSignups;
@@ -37,6 +39,7 @@ public class RaidAggregate {
             .createdDate(now)
             .updatedDate(now)
             .name(request.getName())
+            .log(null)
             .createdBy(createdBy)
             .raidDateTime(request.getRaidDateTime())
             .signups(new HashMap<>())
