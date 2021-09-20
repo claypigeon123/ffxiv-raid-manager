@@ -84,7 +84,7 @@ export const App = () => {
                 <Header setSidebarStatus={setSidebarStatus} />
                 <Container className="px-0">
                     <Switch>
-                        <Route exact path="/raids/new" render={(props) => <NewRaid {...props} />} />
+                        { (userData?.user?.role === "ADMIN" || userData?.user?.role === "RAID_LEADER") && <Route exact path="/raids/new" render={(props) => <NewRaid {...props} />} />}
                         <Route exact path="/raids/upcoming" render={(props) => <UpcomingRaids {...props} />} />
                         <Route exact path="/raids/old" render={(props) => <OldRaids {...props} />} />
                         <Route exact path="/profile" render={(props) => <Profile {...props} />} />

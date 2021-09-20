@@ -1,6 +1,6 @@
 import { SidebarNavHeader } from "../elements/SidebarNavHeader";
 import { SidebarNavItem } from "../elements/SidebarNavItem";
-import { FaUser, FaArchive, FaCalendarPlus } from 'react-icons/fa';
+import { FaUser, FaArchive, FaCalendarPlus, FaHome } from 'react-icons/fa';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { Nav } from "react-bootstrap";
 
@@ -14,6 +14,11 @@ export const SidebarContent = ({ setSidebarStatus, role }) => {
         <nav>
             <div className="navbar-dark pt-3" style={{ width: '270px' }}>
                 <div> <SidebarNavHeader name="Navigation" large /> </div>
+
+                <SidebarNavHeader name="General" />
+                <Nav className="navbar-nav mr-auto mb-3">
+                    <SidebarNavItem exact to="/" name="Home" icon={<FaHome size="20" />} onClick={closeSidebar} />
+                </Nav>
 
                 <SidebarNavHeader name="Profile" />
                 <Nav className="navbar-nav mr-auto mb-3">

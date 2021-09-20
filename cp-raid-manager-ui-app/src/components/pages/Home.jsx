@@ -1,9 +1,7 @@
-
-
 export const Home = () => {
     return (
-        <div className="text-center text-muted">
-            Choose an option on the left
+        <div style={{fontSize: '20px'}} className="text-center text-muted mt-5">
+            Choose an option from the menu
         </div>
     )
 };
