@@ -27,7 +27,7 @@ export const UpcomingRaids = () => {
 
     useEffect(() => {
         if (selectedRaidId !== undefined) getRaid();
-    }, [selectedRaidId])
+    }, [selectedRaidId]) //eslint-disable-line react-hooks/exhaustive-deps
 
     const getRaids = () => {
         setLoadingRaids(true);
