@@ -13,6 +13,7 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRa
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.websocket.EventEmitterComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.couchbase.core.query.Query;
 
@@ -38,6 +39,7 @@ public class RaidService {
     private final AggregatesReactiveRepository<UserAggregate, String> userDao;
     private final Clock clock;
     private final DateTimeFormatter dtf;
+    private final EventEmitterComponent emitter;
 
     public Mono<GetRaidsResponse> getCurrentRaids() {
         Query query = new Query();
@@ -94,14 +96,14 @@ public class RaidService {
             .flatMap(tuple3 -> signoffFromRaid(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()));
     }
 
-    public Mono<RaidAggregate> confirmSignup(String raidId, ConfirmSignupRequest request) {
+    public Mono<RaidAggregate> confirmSignup(String requester, String raidId, ConfirmSignupRequest request) {
         return findUserAndRaid(raidId, request.getUserId())
-            .flatMap(tuple3 -> confirmSignupForRaid(tuple3.getT1(), tuple3.getT2(), tuple3.getT3(), request));
+            .flatMap(tuple3 -> confirmSignupForRaid(requester, tuple3.getT1(), tuple3.getT2(), tuple3.getT3(), request));
     }
 
-    public Mono<RaidAggregate> unconfirmSignup(String raidId, UnconfirmSignupRequest request) {
+    public Mono<RaidAggregate> unconfirmSignup(String requester, String raidId, UnconfirmSignupRequest request) {
         return findUserAndRaid(raidId, request.getUserId())
-            .flatMap(tuple3 -> unconfirmSignupForRaid(tuple3.getT1(), tuple3.getT2(), tuple3.getT3()));
+            .flatMap(tuple3 -> unconfirmSignupForRaid(requester, tuple3.getT1(), tuple3.getT2(), tuple3.getT3()));
     }
 
     public Mono<RaidAggregate> attachLog(String raidId, String link) {
@@ -149,7 +151,8 @@ public class RaidService {
         signups.put(id, signup);
         raid.setSignups(signups);
         raid.setUpdatedDate(now);
-        return raidDao.upsert(raid);
+        return raidDao.upsert(raid)
+            .doOnSuccess(i -> emitter.emitSignup(user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> signoffFromRaid(String now, UserAggregate user, RaidAggregate raid) {
@@ -167,10 +170,11 @@ public class RaidService {
         raid.setSignups(signups);
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
-        return raidDao.upsert(raid);
+        return raidDao.upsert(raid)
+            .doOnSuccess(i -> emitter.emitSignoff(user.getId(), raid.getName()));
     }
 
-    private Mono<RaidAggregate> confirmSignupForRaid(String now, UserAggregate user, RaidAggregate raid, ConfirmSignupRequest request) {
+    private Mono<RaidAggregate> confirmSignupForRaid(String requester, String now, UserAggregate user, RaidAggregate raid, ConfirmSignupRequest request) {
         String id = user.getId();
         Map<String, Signup> signups = raid.getSignups();
 
@@ -188,10 +192,11 @@ public class RaidService {
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
 
-        return raidDao.upsert(raid);
+        return raidDao.upsert(raid)
+            .doOnSuccess(i -> emitter.emitSignupConfirmation(requester, user.getId(), raid.getName()));
     }
 
-    private Mono<RaidAggregate> unconfirmSignupForRaid(String now, UserAggregate user, RaidAggregate raid) {
+    private Mono<RaidAggregate> unconfirmSignupForRaid(String requester, String now, UserAggregate user, RaidAggregate raid) {
         String id = user.getId();
         Map<String, ConfirmedSignup> confirmedSignups = raid.getConfirmedSignups();
 
@@ -203,7 +208,8 @@ public class RaidService {
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
 
-        return raidDao.upsert(raid);
+        return raidDao.upsert(raid)
+            .doOnSuccess(i -> emitter.emitSignupConfirmationCancellation(requester, user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> attachLogToRaid(RaidAggregate aggregate, String link) {

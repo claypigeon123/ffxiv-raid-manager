@@ -73,16 +73,18 @@ public class RaidController {
 
     @PutMapping("/{raidId}/confirm-signup")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody ConfirmSignupRequest request) {
-        log.info("Request to confirm signup of {} on raid {} as {}", request.getUserId(), raidId, request.getJob());
-        return raidService.confirmSignup(raidId, request);
+    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody ConfirmSignupRequest request, ServerWebExchange ex) {
+        String requester = ex.getAttribute("requesterId");
+        log.info("Request by {} to confirm signup of {} on raid {} as {}", requester, request.getUserId(), raidId, request.getJob());
+        return raidService.confirmSignup(requester, raidId, request);
     }
 
     @PutMapping("/{raidId}/unconfirm-signup")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody UnconfirmSignupRequest request) {
-        log.info("Request to unconfirm signup of {} on raid {}", request.getUserId(), raidId);
-        return raidService.unconfirmSignup(raidId, request);
+    public Mono<RaidAggregate> confirmSignup(@PathVariable String raidId, @RequestBody UnconfirmSignupRequest request, ServerWebExchange ex) {
+        String requester = ex.getAttribute("requesterId");
+        log.info("Request by {} to unconfirm signup of {} on raid {}", requester, request.getUserId(), raidId);
+        return raidService.unconfirmSignup(requester, raidId, request);
     }
 
     @PutMapping("/{raidId}/attach-log")
