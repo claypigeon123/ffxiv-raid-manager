@@ -16,10 +16,9 @@ pipeline {
         pollSCM('H/5 * * * *')
     }
 
-    when { changeset "${env.ROOT}/**" }
-
     stages {
         stage ('Preparation') {
+            when { changeset "${env.ROOT}/**" }
             steps {
                 deleteDir()
                 checkout scm
@@ -27,6 +26,7 @@ pipeline {
         }
 
         stage ('Maven package') {
+            when { changeset "${env.ROOT}/**" }
             steps {
                 sh "mvn -f ${env.ROOT}/pom.xml  clean package"
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
