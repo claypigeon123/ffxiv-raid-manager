@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         ROOT = "cp-raid-manager-system-controller-app"
+        MVN_TO_USE = "maven-3.6.3"
+        JDK_TO_USE = "jdk-11"
     }
 
     agent any
@@ -26,7 +28,7 @@ pipeline {
 
         stage ('Maven package') {
             steps {
-                withMaven(maven: "maven-3.6.3", jdk: "jdk-11") {
+                withMaven(maven: env.MVN_TO_USE, jdk: env.JDK_TO_USE) {
                     sh "mvn -f ${env.ROOT}/pom.xml clean package"
                 }
             }
@@ -34,7 +36,7 @@ pipeline {
 
         stage ('Maven deploy') {
             steps {
-                withMaven(maven: "maven-3.6.3", jdk: "jdk-11") {
+                withMaven(maven: env.MVN_TO_USE, jdk: env.JDK_TO_USE) {
                     sh "mvn -DskipTests=true -f ${env.ROOT}/pom.xml deploy"
                 }
             }
