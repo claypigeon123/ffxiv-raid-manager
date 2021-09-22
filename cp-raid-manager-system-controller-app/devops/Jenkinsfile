@@ -29,7 +29,6 @@ pipeline {
                 withMaven(maven: "maven-3.6.3", jdk: "jdk-11") {
                     sh "mvn -f ${env.ROOT}/pom.xml clean package"
                 }
-                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
 
