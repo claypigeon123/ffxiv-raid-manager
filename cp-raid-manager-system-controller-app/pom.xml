@@ -26,7 +26,7 @@
     <distributionManagement>
         <snapshotRepository>
             <id>pigeon-nexus</id>
-            <url>http://192.168.100.130:2002/repository/maven-snapshots</url>
+            <url>http://pigeon-nexus:8081/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
