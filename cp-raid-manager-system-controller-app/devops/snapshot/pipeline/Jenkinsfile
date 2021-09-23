@@ -26,7 +26,7 @@ pipeline {
                 deleteDir()
                 checkout scm
                 script {
-                    version = readMavenPom("${env.ROOT}/pom.xml").getVersion()
+                    version = readMavenPom(file: "${env.ROOT}/pom.xml").getVersion()
                 }
             }
         }
