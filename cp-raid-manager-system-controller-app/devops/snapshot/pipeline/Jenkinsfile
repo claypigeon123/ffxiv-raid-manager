@@ -1,4 +1,5 @@
 def image
+def version
 pipeline {
 
     environment {
@@ -6,15 +7,6 @@ pipeline {
         NAME = "cp-raid-manager-system-controller-app"
         MVN_TO_USE = "maven-3.6.3"
         JDK_TO_USE = "jdk-11"
-
-        /*VERSION = script {
-            def ver
-            withMaven(maven: env.MVN_TO_USE, jdk: env.JDK_TO_USE) {
-                ver = sh(script: "mvn -q -f ${ROOT}/pom.xml -Dexec.executable=\'echo\' -Dexec.args=\'\${project.version}\' --non-recursive exec:exec", returnStdout: true).trim()
-                ver = ver.split("\n")[-1]
-            }
-            return ver
-        }*/
     }
 
     agent any
@@ -33,6 +25,9 @@ pipeline {
             steps {
                 deleteDir()
                 checkout scm
+                script {
+                    version = readMavenPom("${env.ROOT}/pom.xml").getVersion()
+                }
             }
         }
 
@@ -54,7 +49,7 @@ pipeline {
 
         stage ('Docker build') {
             steps {
-                sh "echo ${POM_VERSION}"
+                sh "echo ${version}"
                 /*script {
                     docker.withRegistry("http://pigeon-nexus:1900", "pigeon-nexus") {
                         image = docker.build()
