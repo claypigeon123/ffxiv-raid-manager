@@ -50,8 +50,10 @@ pipeline {
         stage ('Docker build') {
             steps {
                 script {
-                    docker.withRegistry("http://pigeon-nexus:1900", "pigeon-nexus") {
-                        image = docker.build("${env.NAME}:${version}", "${env.ROOT}")
+                    docker.withTool('docker') {
+                        docker.withRegistry("http://pigeon-nexus:1900", "pigeon-nexus") {
+                            image = docker.build("${env.NAME}:${version}", "${env.ROOT}")
+                        }
                     }
                 }
             }
@@ -60,8 +62,10 @@ pipeline {
         stage ('Docker push') {
             steps {
                 script {
-                    docker.withRegistry("http://pigeon-nexus:1900", "pigeon-nexus") {
-                        image.push "${version}"
+                    docker.withTool('docker') {
+                        docker.withRegistry("http://pigeon-nexus:1900", "pigeon-nexus") {
+                            image.push "${version}"
+                        }
                     }
                 }
             }
