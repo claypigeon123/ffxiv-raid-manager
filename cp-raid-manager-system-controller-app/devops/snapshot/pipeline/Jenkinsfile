@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     docker.withTool('docker') {
-                        docker.withRegistry('http://pigeon-nexus:8081', 'pigeon-nexus') {
+                        docker.withRegistry('build.cp-sys.hu/v2', 'pigeon-nexus') {
                             image = docker.build("${env.NAME}:${version}", "${env.ROOT}")
                         }
                     }
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 script {
                     docker.withTool('docker') {
-                        docker.withRegistry('http://pigeon-nexus:8081', 'pigeon-nexus') {
+                        docker.withRegistry('build.cp-sys.hu/v2', 'pigeon-nexus') {
                             image.push "${version}"
                         }
                     }
