@@ -52,7 +52,7 @@ pipeline {
                 script {
                     //docker.withTool('docker') {
                         //docker.withRegistry('http://build.cp-sys.hu', 'pigeon-nexus') {
-                            image = docker.build("${env.NAME}:${version}", "${env.ROOT}")
+                            image = docker.build("${env.NAME}:${version}", "--build-arg MICROSERVICE_NAME=${env.NAME} --build-arg MICROSERVICE_VERSION=${version} ${env.ROOT}")
                         //}
                     //}
                 }
