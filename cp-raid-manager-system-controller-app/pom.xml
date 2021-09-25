@@ -12,7 +12,7 @@
 
     <groupId>com.cp.raidmanager</groupId>
     <artifactId>cp-raid-manager-system-controller-app</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>cp-raid-manager-system-controller-app</name>
     <description>CP Raid Manager System Controller</description>
