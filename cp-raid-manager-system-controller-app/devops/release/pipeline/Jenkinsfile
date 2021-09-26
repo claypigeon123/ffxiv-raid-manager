@@ -54,7 +54,7 @@ pipeline {
                         cmd += '-e \"SPRING_DATA_MONGODB_URI=mongodb://$MONGODB_USERNAME:$MONGODB_PASSWORD@$MONGODB_HOST:$MONGODB_PORT/$MONGODB_DATABASE?authSource=admin&authMechanism=SCRAM-SHA-1\" '
                         cmd += "-e \"RAIDMANAGER_APP_ARTIFICIALDELAYMS=${params.ARTIFICIAL_DELAY_MS}\" "
                         cmd += "-e \"RAIDMANAGER_SECURITY_ALLOWEDORIGINS=${params.ALLOWED_ORIGINS}\" "
-                        cmd += '-e \"RAIDMANAGER_JWT_SECRET=$env.JWT_SECRET\" '
+                        cmd += '-e \"RAIDMANAGER_JWT_SECRET=$JWT_SECRET\" '
                         cmd += "build.cp-sys.hu/${env.NAME}:${params.VERSION}"
 
                         sh "${cmd}"
