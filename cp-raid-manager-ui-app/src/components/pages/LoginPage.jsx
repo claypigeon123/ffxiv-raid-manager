@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Container, Form, Col, Button } from "react-bootstrap";
 import { DodoLogo } from "../elements/DodoLogo";
 import { PageContainer } from "../fragments/PageContainer";
@@ -15,10 +15,15 @@ export const LoginPage = () => {
     const dispatch = useDispatch();
 
     const error = useSelector(state => state.genericError);
+    const usernameRef = useRef(null);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [displayAdvice, setDisplayAdvice] = useState(0);
+
+    useEffect(() => {
+        usernameRef.current.focus();
+    }, [])
 
     useEffect(() => {
         if (error === null || error === undefined) return;
@@ -39,6 +44,7 @@ export const LoginPage = () => {
         dispatch(loginAction(username, password));
         setUsername("");
         setPassword("");
+        usernameRef?.current?.focus();
     }
 
     const isValidPair = () => {
@@ -63,7 +69,7 @@ export const LoginPage = () => {
                 <Form onSubmit={onSubmit}>
                     <Form.Row className="justify-content-around">
                         <Col lg="6">
-                            <ControlledFormTextbox value={username} onChange={setUsername} label="Username" icon={<FaIdCardAlt />} placeholder="Username" />
+                            <ControlledFormTextbox reference={usernameRef} value={username} onChange={setUsername} label="Username" icon={<FaIdCardAlt />} placeholder="Username" />
                         </Col>
                     </Form.Row>
                     <Form.Row className="justify-content-around">

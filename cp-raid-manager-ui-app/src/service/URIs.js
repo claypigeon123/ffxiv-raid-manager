@@ -7,6 +7,8 @@ export const RENEW =                                            `${prefix}/publi
 // Users
 export const GET_USER =                                         `${prefix}/users/{id}`;
 export const BATCH_GET_USERS =                                  `${prefix}/users`;
+export const REGISTER_NEW_USER =                                `${prefix}/users/register`;
+export const RESET_PASSWORD =                                   `${prefix}/users/reset-password`
 export const CHANGE_USER_DETAILS =                              `${prefix}/users`;
 
 // Raids

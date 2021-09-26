@@ -1,4 +1,4 @@
-package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request;
+package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterRequest {
-    private String username;
+public class RegisterResponse {
+    private String id;
+    private String tempPassword;
 }

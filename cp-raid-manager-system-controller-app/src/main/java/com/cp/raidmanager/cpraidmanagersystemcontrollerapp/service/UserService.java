@@ -4,6 +4,7 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregat
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ChangeUserDetailsRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RegisterRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.RegisterResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -36,9 +38,14 @@ public class UserService {
         return userDao.query(query(where("id").in(ids)));
     }
 
-    public Mono<UserAggregate> register(RegisterRequest request) {
-        return validateAndPrepareForInsert(request)
-            .flatMap(userDao::insert);
+    public Mono<RegisterResponse> register(RegisterRequest request) {
+        return validateAndInsert(request);
+    }
+
+    public Mono<RegisterResponse> resetPassword(RegisterRequest request) {
+        return userDao.findById(request.getUsername())
+            .switchIfEmpty(Mono.error(new AggregateNotFoundException()))
+            .flatMap(this::resetPasswordOf);
     }
 
     public Mono<UserAggregate> changeDetails(ChangeUserDetailsRequest request, String id) {
@@ -49,16 +56,29 @@ public class UserService {
 
     // --- helpers ---
 
-    private Mono<UserAggregate> validateAndPrepareForInsert(RegisterRequest request) {
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            throw new BadRequestException("Passwords didn't match");
-        }
+    private Mono<RegisterResponse> validateAndInsert(RegisterRequest request) {
+        String tempPassword = UUID.randomUUID().toString();
 
-        return Mono.just(UserAggregate.fromRegisterRequest(
-            request,
-            OffsetDateTime.now(clock).format(dtf),
-            passwordEncoder.encode(request.getPassword())
-        ));
+        return Mono.just(UserAggregate.fromRegisterRequest(request, OffsetDateTime.now(clock).format(dtf), passwordEncoder.encode(tempPassword)))
+            .flatMap(userDao::insert)
+            .map(aggregate -> RegisterResponse.builder()
+                .id(aggregate.getId())
+                .tempPassword(tempPassword)
+                .build()
+            );
+    }
+
+    private Mono<RegisterResponse> resetPasswordOf(UserAggregate aggregate) {
+        String tempPassword = UUID.randomUUID().toString();
+        String encoded = passwordEncoder.encode(tempPassword);
+
+        aggregate.setPassword(encoded);
+        return userDao.upsert(aggregate)
+            .map(saved -> RegisterResponse.builder()
+                .id(saved.getId())
+                .tempPassword(tempPassword)
+                .build()
+            );
     }
 
     private Mono<UserAggregate> changeDetails(UserAggregate aggregate, ChangeUserDetailsRequest request) {

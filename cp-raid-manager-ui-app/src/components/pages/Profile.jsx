@@ -102,7 +102,7 @@ export const Profile = () => {
                         <Col lg="4">
                             <Button disabled={areThereChanges} type="submit" block className="btn-dodo"> <FaSave size="20" /> Save Changes</Button>
                         </Col>
-                        <Col lg="4">
+                        <Col lg="4" className="mt-4 mt-lg-0">
                             <Button onClick={reset} block variant="outline-danger"> <FaTrashAlt size="19" /> Reset</Button>
                         </Col>
                     </Form.Row>

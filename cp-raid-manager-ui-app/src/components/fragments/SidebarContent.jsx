@@ -1,6 +1,6 @@
 import { SidebarNavHeader } from "../elements/SidebarNavHeader";
 import { SidebarNavItem } from "../elements/SidebarNavItem";
-import { FaUser, FaArchive, FaCalendarPlus, FaHome } from 'react-icons/fa';
+import { FaUser, FaArchive, FaCalendarPlus, FaHome, FaIdCard, FaUndoAlt } from 'react-icons/fa';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { Nav } from "react-bootstrap";
 
@@ -36,6 +36,15 @@ export const SidebarContent = ({ setSidebarStatus, role }) => {
                     <SidebarNavHeader name="Raid Leader" />
                     <Nav className="navbar-nav mr-auto mb-3">
                         <SidebarNavItem exact to="/raids/new" name="Post New" icon={<FaCalendarPlus size="20" />} onClick={closeSidebar} />
+                    </Nav>
+                </>}
+
+                { (role === "ADMIN") &&
+                <>
+                    <SidebarNavHeader name="Admin" />
+                    <Nav className="navbar-nav mr-auto mb-3">
+                        <SidebarNavItem exact to="/users/new" name="Create Account" icon={<FaIdCard size="20" />} onClick={closeSidebar} />
+                        <SidebarNavItem exact to="/users/reset" name="Reset Password" icon={<FaUndoAlt size="20" />} onClick={closeSidebar} />
                     </Nav>
                 </>}
             </div>

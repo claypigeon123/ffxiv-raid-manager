@@ -3,6 +3,7 @@ package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ChangeUserDetailsRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RegisterRequest;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.RegisterResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -42,9 +43,16 @@ public class UserController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<UserAggregate> register(@RequestBody RegisterRequest request) {
+    public Mono<RegisterResponse> register(@RequestBody RegisterRequest request) {
         log.info("Request to register new user aggregate");
         return service.register(request);
+    }
+
+    @PostMapping("/reset-password")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<RegisterResponse> resetPassword(@RequestBody RegisterRequest request) {
+        log.info("Request to reset password of {}", request.getUsername());
+        return service.resetPassword(request);
     }
 
     @PutMapping

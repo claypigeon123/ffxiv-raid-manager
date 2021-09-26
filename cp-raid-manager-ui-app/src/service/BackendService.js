@@ -2,8 +2,8 @@ import axios from 'axios';
 import {
     makeUri,
     AUTH, RENEW,
-    GET_USER, CHANGE_USER_DETAILS,
-    GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, BATCH_GET_USERS, GET_RAID,
+    GET_USER, BATCH_GET_USERS, REGISTER_NEW_USER, RESET_PASSWORD, CHANGE_USER_DETAILS,
+    GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, GET_RAID,
     SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, LATEST_NOTIFICATIONS
 } from './URIs';
 
@@ -46,6 +46,22 @@ const getUser = (id) => {
 
 const batchGetUsers = (ids) => {
     return axios.post(BATCH_GET_USERS, ids).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const register = (payload) => {
+    return axios.post(REGISTER_NEW_USER, payload).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const resetPassword = (payload) => {
+    return axios.post(RESET_PASSWORD, payload).then(res => {
         return res.data;
     }).catch(err => {
         throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
@@ -123,7 +139,7 @@ const getLatestNotifications = () => {
 
 const service = {
     auth, renew,
-    getUser, batchGetUsers, changeUserDetails,
+    getUser, batchGetUsers, register, resetPassword, changeUserDetails,
     getUpcomingRaids, getOldRaids, getRaid, createRaid,
     signupForRaid, signoffFromRaid,
     getLatestNotifications

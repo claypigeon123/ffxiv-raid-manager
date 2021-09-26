@@ -25,7 +25,7 @@ pipeline {
         string(name: 'MONGODB_DATABASE', defaultValue: 'RAID_MANAGER_DB', description: 'Database name for mongodb')
         string(name: 'ARTIFICIAL_DELAY_MS', defaultValue: '0', description: 'Artificial delay to apply (in ms)')
         string(name: 'ALLOWED_ORIGINS', defaultValue: 'https://dodo.cp-sys.hu', description: 'Comma separated list of allowed origins')
-
+        string(name: 'PROXY', defaultValue: 'pigeon-nginx', description: 'Name of the container to reload after operations')
     }
 
     stages {
@@ -59,6 +59,14 @@ pipeline {
 
                         sh "${cmd}"
                     }
+                }
+            }
+        }
+
+        stage ('Reload proxy') {
+            steps {
+                script {
+                    sh "docker container restart -t 2 ${params.PROXY}"
                 }
             }
         }

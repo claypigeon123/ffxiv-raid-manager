@@ -68,13 +68,19 @@ public class SecurityConfig {
                 .pathMatchers(HttpMethod.OPTIONS,
                     "/**"
                 ).permitAll()
+
                 .pathMatchers(HttpMethod.GET,
                     "/ws/notifications"
                 ).permitAll()
+
                 .pathMatchers(HttpMethod.POST,
-                    "/public/auth",
-                    "/users/register"
+                    "/public/auth"
                 ).permitAll()
+
+                .pathMatchers(HttpMethod.POST,
+                    "/users/register",
+                    "/users/reset-password"
+                ).hasAuthority(ADMIN.toString())
 
                 .pathMatchers(HttpMethod.POST,
                     "/raids"

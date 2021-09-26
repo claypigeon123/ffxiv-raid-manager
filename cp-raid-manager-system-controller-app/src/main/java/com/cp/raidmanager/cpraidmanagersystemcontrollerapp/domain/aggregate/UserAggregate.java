@@ -35,11 +35,10 @@ public class UserAggregate {
             .id(request.getUsername())
             .createdDate(now)
             .updatedDate(now)
-            .password(request.getPassword())
             .username(request.getUsername())
             .password(hash)
-            .server(request.getServer())
-            .inGameName(request.getInGameName())
+            .server("change me")
+            .inGameName("change me")
             .role(Role.USER)
             .build();
     }

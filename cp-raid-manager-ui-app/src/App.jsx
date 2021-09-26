@@ -15,6 +15,8 @@ import { Profile } from "./components/pages/Profile";
 import { UpcomingRaids } from "./components/pages/UpcomingRaids";
 import { OldRaids } from "./components/pages/OldRaids";
 import { NewRaid } from "./components/pages/NewRaid";
+import { CreateAccount } from "./components/pages/CreateAccount";
+import { ResetPassword } from "./components/pages/ResetPassword";
 
 
 const mql = window.matchMedia(`(min-width: 992px)`);
@@ -85,6 +87,8 @@ export const App = () => {
                 <Header setSidebarStatus={setSidebarStatus} />
                 <Container className="px-0">
                     <Switch>
+                        { (userData?.user?.role === "ADMIN") && <Route exact path="/users/reset" render={(props) => <ResetPassword {...props} />} />}
+                        { (userData?.user?.role === "ADMIN") && <Route exact path="/users/new" render={(props) => <CreateAccount {...props} />} />}
                         { (userData?.user?.role === "ADMIN" || userData?.user?.role === "RAID_LEADER") && <Route exact path="/raids/new" render={(props) => <NewRaid {...props} />} />}
                         <Route exact path="/raids/upcoming" render={(props) => <UpcomingRaids {...props} />} />
                         <Route exact path="/raids/old" render={(props) => <OldRaids {...props} />} />
