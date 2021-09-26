@@ -65,6 +65,9 @@ public class SecurityConfig {
             .securityContextRepository(ctxRepo)
 
             .authorizeExchange(exchange -> exchange
+                .pathMatchers(HttpMethod.OPTIONS,
+                    "/**"
+                ).permitAll()
                 .pathMatchers(HttpMethod.GET,
                     "/ws/notifications"
                 ).permitAll()
