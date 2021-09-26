@@ -43,11 +43,7 @@ pipeline {
                         def cmd = "docker run -d ";
                         cmd += "--network=\"raid-manager\" "
                         cmd += "--name ${env.NAME} "
-                        cmd += "-e \"SPRING_DATA_MONGODB_HOST=${params.MONGODB_HOST}\" "
-                        cmd += "-e \"SPRING_DATA_MONGODB_PORT=${params.MONGODB_PORT}\" "
-                        cmd += "-e \"SPRING_DATA_MONGODB_DATABASE=${params.MONGODB_DATABASE}\" "
-                        cmd += "-e \"SPRING_DATA_MONGODB_USERNAME=${env.MONGODB_USERNAME}\" "
-                        cmd += "-e \"SPRING_DATA_MONGODB_PASSWORD=${env.MONGODB_PASSWORD}\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_URI=mongodb://${env.MONGODB_USERNAME}:${env.MONGODB_PASSWORD}@${params.MONGODB_HOST}:${params.MONGODB_PORT}/${params.MONGODB_DATABASE}?ssl=true&authSource=admin&authMechanism=SCRAM-SHA-1\" "
                         cmd += "-e \"RAID-MANAGER_APP_ARTIFICIAL-DELAY-MS=${params.ARTIFICIAL_DELAY_MS}\" "
                         cmd += "-e \"RAID-MANAGER_SECURITY_ALLOWED-ORIGINS=${params.ALLOWED_ORIGINS}\" "
                         cmd += "-e \"RAID-MANAGER_JWT_SECRET=${env.JWT_SECRET}\" "

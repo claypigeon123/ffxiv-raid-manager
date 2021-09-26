@@ -5,7 +5,7 @@ RUN mkdir -p /opt/microservice
 # Set the working directory to microsevice directory
 WORKDIR /opt/microservice
 
-EXPOSE 8080
+EXPOSE 9000
 
 # Set the default command to run on boot
 ENTRYPOINT exec java -jar /opt/microservice/${MICROSERVICE_NAME}.jar

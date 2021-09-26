@@ -18,11 +18,8 @@ spring:
         mongodb:
             repositories:
                 type: reactive
-            host: localhost
-            port: 27017
-            username: username
-            password: password
-            database: RAID_MANAGER_DB
+            uri: mongodb://username:password@localhost:27017/RAID_MANAGER_DB?authSource=admin&authMechanism=SCRAM-SHA-1
+
 
 ---
 
