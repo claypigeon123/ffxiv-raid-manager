@@ -50,7 +50,7 @@ pipeline {
                         cmd += "-e \"RAID-MANAGER_APP_ARTIFICIAL-DELAY-MS=${params.ARTIFICIAL_DELAY_MS}\" "
                         cmd += "-e \"RAID-MANAGER_SECURITY_ALLOWED-ORIGINS=${params.ALLOWED_ORIGINS}\" "
                         cmd += "-e \"RAID-MANAGER_JWT_SECRET=${env.JWT_SECRET}\" "
-                        cmd += "${NAME}:${params.VERSION}"
+                        cmd += "build.cp-sys.hu/${NAME}:${params.VERSION}"
 
                         sh "${cmd}"
                     }
