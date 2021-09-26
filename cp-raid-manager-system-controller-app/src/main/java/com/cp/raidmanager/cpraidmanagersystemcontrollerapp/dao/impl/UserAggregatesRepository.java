@@ -2,54 +2,73 @@ package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
+import com.mongodb.client.model.UpdateOneModel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.couchbase.core.ReactiveCouchbaseTemplate;
-import org.springframework.data.couchbase.core.query.Query;
+import org.bson.Document;
+import org.springframework.data.mongodb.core.FindAndModifyOptions;
+import org.springframework.data.mongodb.core.FindAndReplaceOptions;
+import org.springframework.data.mongodb.core.convert.UpdateMapper;
+import org.springframework.data.mongodb.core.query.BasicUpdate;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static org.springframework.data.mongodb.core.query.Criteria.*;
+
 @Repository
 @RequiredArgsConstructor
 public class UserAggregatesRepository implements AggregatesReactiveRepository<UserAggregate, String> {
-    private final ReactiveCouchbaseTemplate template;
+
+    private final ReactiveMongoTemplate template;
+    private final String userCollectionName;
 
     @Override
-    public Mono<UserAggregate> findById(String id) {
-        return template.findById(UserAggregate.class)
-            .one(id);
+    public Mono<UserAggregate> findById(String s) {
+        return template.findById(s, UserAggregate.class, userCollectionName);
     }
 
     @Override
     public Mono<UserAggregate> findOne(Query query) {
-        return template.findByQuery(UserAggregate.class)
+        return template.query(UserAggregate.class)
+            .inCollection(userCollectionName)
             .matching(query)
             .one();
     }
 
     @Override
     public Flux<UserAggregate> query(Query query) {
-        return template.findByQuery(UserAggregate.class)
+        return template.query(UserAggregate.class)
+            .inCollection(userCollectionName)
             .matching(query)
             .all();
     }
 
     @Override
     public Mono<UserAggregate> insert(UserAggregate aggregate) {
-        return template.insertById(UserAggregate.class)
+        return template.insert(UserAggregate.class)
+            .inCollection(userCollectionName)
             .one(aggregate);
     }
 
     @Override
     public Mono<UserAggregate> upsert(UserAggregate aggregate) {
-        return template.upsertById(UserAggregate.class)
-            .one(aggregate);
+        return template.update(UserAggregate.class)
+            .inCollection(userCollectionName)
+            .matching(Query.query(where("id").is(aggregate.getId())))
+            .replaceWith(aggregate)
+            .withOptions(FindAndReplaceOptions.options().upsert().returnNew())
+            .findAndReplace();
     }
 
     @Override
-    public Mono<Void> deleteById(String id) {
-        return template.removeById()
-            .one(id)
+    public Mono<Void> deleteById(String s) {
+        return template.remove(UserAggregate.class)
+            .inCollection(userCollectionName)
+            .matching(Query.query(where("_id").is(s)))
+            .all()
             .then();
     }
 }

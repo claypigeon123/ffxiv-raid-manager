@@ -1,6 +1,7 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.RaidAggregatesRepository;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.ConfirmedSignup;
@@ -15,9 +16,9 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNo
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.websocket.EventEmitterComponent;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.couchbase.core.query.Query;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
@@ -28,15 +29,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static org.springframework.data.couchbase.core.query.Query.query;
-import static org.springframework.data.couchbase.core.query.QueryCriteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
 @RequiredArgsConstructor
 public class RaidService {
 
-    private final AggregatesReactiveRepository<RaidAggregate, String> raidDao;
-    private final AggregatesReactiveRepository<UserAggregate, String> userDao;
+    private final RaidAggregatesRepository raidDao;
+    private final UserAggregatesRepository userDao;
     private final Clock clock;
     private final DateTimeFormatter dtf;
     private final EventEmitterComponent emitter;
@@ -72,7 +73,7 @@ public class RaidService {
                 if (signups.isEmpty()) {
                     return Mono.just(new ArrayList<UserAggregate>());
                 }
-                return userDao.query(query(where("meta().id").in(signups.toArray()))).collectList();
+                return userDao.query(query(where("id").in(signups.toArray()))).collectList();
             })
             .map(tuple2 -> GetRaidResponse.builder()
                 .raid(tuple2.getT1())
@@ -214,6 +215,7 @@ public class RaidService {
 
     private Mono<RaidAggregate> attachLogToRaid(RaidAggregate aggregate, String link) {
         aggregate.setLog(link);
+        aggregate.setUpdatedDate(OffsetDateTime.now(clock).format(dtf));
         return raidDao.upsert(aggregate);
     }
 }

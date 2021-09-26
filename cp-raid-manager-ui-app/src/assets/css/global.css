@@ -174,7 +174,7 @@ body {
 }
 
 .bg-very-dark {
-    background-color: #22262e;
+    background-color: #22262e !important;
 }
 
 .react-datetime-picker__wrapper, .react-datetime-picker__inputGroup__input, .react-datetime-picker__inputGroup > input, .react-datetime-picker__button {
@@ -241,4 +241,32 @@ body {
 
 .job-selected:hover {
     background-color: #00aeff;
+}
+
+.notification-display {
+    cursor: pointer;
+}
+
+.notification-display:hover {
+    color: #00aeff;
+}
+
+.nav-tabs .nav-link.active {
+    color: #FFF;
+    background-color: #1076a5;
+    border-color: #1076a5;
+    outline: none;
+}
+
+.dodo-tab {
+    color: #1d88b9;
+}
+
+.dodo-tab:hover, .nav-tabs .nav-link:hover {
+    color: #fff;
+    border-color: #14a5e9;
+}
+
+.dodo-tab-admin {
+    border-bottom: 1px solid #0f4158 !important;
 }

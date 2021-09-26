@@ -1,6 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ChangeUserDetailsRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RegisterRequest;
@@ -17,13 +17,13 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static org.springframework.data.couchbase.core.query.Query.query;
-import static org.springframework.data.couchbase.core.query.QueryCriteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final AggregatesReactiveRepository<UserAggregate, String> userDao;
+    private final UserAggregatesRepository userDao;
     private final Clock clock;
     private final DateTimeFormatter dtf;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public Flux<UserAggregate> batchFind(List<String> ids) {
-        return userDao.query(query(where("meta().id").in(ids)));
+        return userDao.query(query(where("id").in(ids)));
     }
 
     public Mono<UserAggregate> register(RegisterRequest request) {
@@ -74,6 +74,7 @@ public class UserService {
             aggregate.setInGameName(request.getInGameName());
         }
 
+        aggregate.setUpdatedDate(OffsetDateTime.now(clock).format(dtf));
         return userDao.upsert(aggregate);
     }
 

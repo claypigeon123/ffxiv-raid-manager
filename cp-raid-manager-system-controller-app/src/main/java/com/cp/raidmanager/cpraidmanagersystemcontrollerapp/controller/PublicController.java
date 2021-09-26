@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/public")
 public class PublicController {
     private final Logger log = LoggerFactory.getLogger(PublicController.class);
 

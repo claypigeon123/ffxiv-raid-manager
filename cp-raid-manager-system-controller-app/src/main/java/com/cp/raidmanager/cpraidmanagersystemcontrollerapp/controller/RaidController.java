@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/raids")
+@RequestMapping("/raids")
 public class RaidController {
     private final Logger log = LoggerFactory.getLogger(RaidController.class);
 

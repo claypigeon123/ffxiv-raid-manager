@@ -6,15 +6,23 @@ spring:
     main:
         allow-bean-definition-overriding: true
         web-application-type: reactive
-    couchbase:
-        connection-string: localhost
-        username: user
-        password: password
+    #couchbase:
+        #connection-string: localhost
+        #username: user
+        #password: password
     data:
-        couchbase:
-            bucket-name: RAID_MANAGER_AGGREGATES
+        #couchbase:
+            #bucket-name: RAID_MANAGER_AGGREGATES
+            #repositories:
+                #type: reactive
+        mongodb:
             repositories:
                 type: reactive
+            host: localhost
+            port: 27017
+            username: username
+            password: password
+            database: RAID_MANAGER_DB
 
 ---
 

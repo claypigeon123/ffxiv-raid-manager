@@ -90,7 +90,7 @@ export const UpcomingRaids = () => {
             <PageContainer title={raidData ? raidData?.raid?.name : "Loading..."} icon={<GiCrossedSwords />} tip={
                 <>
                     <Button className="mx-1 btn-dodo" onClick={() => getRaid()} size="sm"> <ImSpinner11 /> </Button>
-                    <Button className="mx-1" onClick={resetSelectedRaid} size="sm" variant="danger"> <ImCross /> </Button>
+                    <Button className="mx-1" onClick={resetSelectedRaid} size="sm" variant="outline-danger"> <ImCross /> </Button>
                 </>
             }>
                 <RaidView raid={raidData?.raid} users={raidData?.users} loading={loadingRaid} signupForRaid={signupForRaid} signoffFromRaid={signoffFromRaid} />

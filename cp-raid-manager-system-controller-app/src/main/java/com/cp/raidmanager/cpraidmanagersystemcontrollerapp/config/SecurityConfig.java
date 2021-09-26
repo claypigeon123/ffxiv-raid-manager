@@ -65,18 +65,21 @@ public class SecurityConfig {
             .securityContextRepository(ctxRepo)
 
             .authorizeExchange(exchange -> exchange
+                .pathMatchers(HttpMethod.GET,
+                    "/ws/notifications"
+                ).permitAll()
                 .pathMatchers(HttpMethod.POST,
-                    "/api/auth",
-                    "/api/users/register"
+                    "/public/auth",
+                    "/users/register"
                 ).permitAll()
 
                 .pathMatchers(HttpMethod.POST,
-                    "/api/raids"
+                    "/raids"
                 ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
 
                 .pathMatchers(HttpMethod.PUT,
-                    "/api/raids/*/confirm-signup",
-                    "/api/raids/*/unconfirm-signup"
+                    "/raids/*/confirm-signup",
+                    "/raids/*/unconfirm-signup"
                 ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
 
                 .anyExchange().authenticated()

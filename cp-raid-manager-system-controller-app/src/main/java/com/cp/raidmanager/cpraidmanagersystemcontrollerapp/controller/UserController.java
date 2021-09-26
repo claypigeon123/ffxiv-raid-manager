@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 

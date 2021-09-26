@@ -13,7 +13,8 @@ import './assets/css/calendar.css';
 import './assets/css/global.css';
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:9000";
+if (process.env.REACT_APP_ENDPOINT_URI) axios.defaults.baseURL = process.env.REACT_APP_ENDPOINT_URI;
+else axios.defaults.baseURL = "http://localhost:9000";
 
 const store = configureStore();
 

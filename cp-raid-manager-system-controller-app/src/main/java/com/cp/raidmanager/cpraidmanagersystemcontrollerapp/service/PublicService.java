@@ -1,7 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.JwtProperties;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.SecurityProperties;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.AuthRequest;
@@ -18,8 +17,8 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.util.Date;
 
-import static org.springframework.data.couchbase.core.query.Query.query;
-import static org.springframework.data.couchbase.core.query.QueryCriteria.where;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -22,7 +21,7 @@ import java.util.List;
 public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationManager {
 
     private final Key secretKey;
-    private final AggregatesReactiveRepository<UserAggregate, String> userDao;
+    private final UserAggregatesRepository userDao;
 
     @Override
     public Mono<Authentication> authenticate(Authentication authentication) {

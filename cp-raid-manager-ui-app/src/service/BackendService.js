@@ -4,7 +4,7 @@ import {
     AUTH, RENEW,
     GET_USER, CHANGE_USER_DETAILS,
     GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, BATCH_GET_USERS, GET_RAID,
-    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID
+    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, LATEST_NOTIFICATIONS
 } from './URIs';
 
 // Auth & related
@@ -112,11 +112,21 @@ const signoffFromRaid = (id) => {
     })
 }
 
+// Misc
+const getLatestNotifications = () => {
+    return axios.get(LATEST_NOTIFICATIONS).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
 const service = {
     auth, renew,
     getUser, batchGetUsers, changeUserDetails,
     getUpcomingRaids, getOldRaids, getRaid, createRaid,
-    signupForRaid, signoffFromRaid
+    signupForRaid, signoffFromRaid,
+    getLatestNotifications
 }
 
 export default service;

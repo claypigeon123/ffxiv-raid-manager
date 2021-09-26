@@ -81,6 +81,7 @@ export const App = () => {
             styles={{ sidebar: { zIndex: '4000' }, content: { overflowY: 'scroll' } }}
             contentId="scrollableMain"
             sidebarClassName="sidebar-body border-right border-dark shadow">
+                {/*I will do this later  <WebsocketComponent on />*/}
                 <Header setSidebarStatus={setSidebarStatus} />
                 <Container className="px-0">
                     <Switch>

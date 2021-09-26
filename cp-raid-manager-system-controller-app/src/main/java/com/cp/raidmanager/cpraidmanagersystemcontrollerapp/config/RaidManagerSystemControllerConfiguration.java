@@ -27,4 +27,14 @@ public class RaidManagerSystemControllerConfiguration {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
+
+    @Bean
+    public String userCollectionName() {
+        return "users";
+    }
+
+    @Bean
+    public String raidCollectionName() {
+        return "raids";
+    }
 }

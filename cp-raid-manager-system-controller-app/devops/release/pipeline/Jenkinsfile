@@ -1,0 +1,61 @@
+pipeline {
+
+    environment {
+        ROOT = "cp-raid-manager-system-controller-app"
+        NAME = "cp-raid-manager-system-controller-app"
+        MVN_TO_USE = "maven-3.6.3"
+        JDK_TO_USE = "jdk-11"
+
+        MONGODB_USERNAME = credentials('mongodb-username')
+        MONGODB_PASSWORD = credentials('mongodb-password')
+        JWT_SECRET = credentials('jwt-secret')
+    }
+
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    parameters {
+        string(name: 'VERSION', description: 'Docker image version to deploy')
+        string(name: 'MONGODB_HOST', defaultValue: 'raid-manager-mongo', description: 'Hostname for mongodb')
+        string(name: 'MONGODB_PORT', defaultValue: '27017', description: 'Port for mongodb')
+        string(name: 'MONGODB_DATABASE', defaultValue: 'RAID_MANAGER_DB', description: 'Database name for mongodb')
+        string(name: 'ARTIFICIAL_DELAY_MS', defaultValue: '0', description: 'Artificial delay to apply (in ms)')
+        string(name: 'ALLOWED_ORIGINS', defaultValue: 'https://dodo.cp-sys.hu', description: 'Comma separated list of allowed origins')
+
+    }
+
+    stages {
+        stage ('Preparation') {
+            steps {
+                deleteDir()
+                checkout scm
+            }
+        }
+
+        stage ('Docker run') {
+            steps {
+                script {
+                    docker.withRegistry('http://build.cp-sys.hu', 'pigeon-nexus') {
+                        def cmd = "docker run -d ";
+                        cmd += "--network=\"raid-manager\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_HOST=${params.MONGODB_HOST}\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_PORT=${params.MONGODB_PORT}\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_DATABASE=${params.MONGODB_DATABASE}\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_USERNAME=${env.MONGODB_USERNAME}\" "
+                        cmd += "-e \"SPRING_DATA_MONGODB_PASSWORD=${env.MONGODB_PASSWORD}\" "
+                        cmd += "-e \"RAID-MANAGER_APP_ARTIFICIAL-DELAY-MS=${params.ARTIFICIAL_DELAY_MS}\" "
+                        cmd += "-e \"RAID-MANAGER_SECURITY_ALLOWED-ORIGINS=${params.ALLOWED_ORIGINS}\" "
+                        cmd += "-e \"RAID-MANAGER_JWT_SECRET=${env.JWT_SECRET}\" "
+                        cmd += "${NAME}:${params.VERSION}"
+
+                        sh "${cmd}"
+                    }
+                }
+            }
+        }
+    }
+}

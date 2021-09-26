@@ -98,7 +98,6 @@ export const getJobIcon = (job, width = 25) => {
 
 export const countRoles = (jobs) => {
     let counts = { tank: 0, healer: 0, melee: 0, ranged: 0, magic: 0 };
-    console.log(jobs);
 
     jobs.forEach(item => {
         if (Object.keys(ROLES.TANK.jobs).includes(item)) counts['tank'] = counts['tank'] + 1;
