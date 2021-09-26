@@ -18,6 +18,8 @@ export const GET_RAID =                                         `${prefix}/raids
 export const CREATE_RAID =                                      `${prefix}/raids`;
 export const SIGNUP_FOR_RAID =                                  `${prefix}/raids/{id}/signup`;
 export const SIGNOFF_FROM_RAID =                                `${prefix}/raids/{id}/signoff`;
+export const CONFIRM_SIGNUP =                                   `${prefix}/raids/{id}/confirm-signup`;
+export const UNCONFIRM_SIGNUP =                                 `${prefix}/raids/{id}/unconfirm-signup`;
 
 // Misc
 export const LATEST_NOTIFICATIONS =                             `${prefix}/notifications`

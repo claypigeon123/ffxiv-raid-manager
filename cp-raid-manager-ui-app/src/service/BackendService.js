@@ -4,7 +4,8 @@ import {
     AUTH, RENEW,
     GET_USER, BATCH_GET_USERS, REGISTER_NEW_USER, RESET_PASSWORD, CHANGE_USER_DETAILS,
     GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, GET_RAID,
-    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, LATEST_NOTIFICATIONS
+    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, CONFIRM_SIGNUP, UNCONFIRM_SIGNUP,
+    LATEST_NOTIFICATIONS
 } from './URIs';
 
 // Auth & related
@@ -128,6 +129,24 @@ const signoffFromRaid = (id) => {
     })
 }
 
+const confirmSignup = (raidId, payload) => {
+    const uri = makeUri(CONFIRM_SIGNUP, [{ name: "id", value: raidId }]);
+    return axios.put(uri, payload).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
+const unconfirmSignup = (raidId, payload) => {
+    const uri = makeUri(UNCONFIRM_SIGNUP, [{ name: "id", value: raidId }]);
+    return axios.put(uri, payload).then(res => {
+        return res.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
 // Misc
 const getLatestNotifications = () => {
     return axios.get(LATEST_NOTIFICATIONS).then(res => {
@@ -141,7 +160,7 @@ const service = {
     auth, renew,
     getUser, batchGetUsers, register, resetPassword, changeUserDetails,
     getUpcomingRaids, getOldRaids, getRaid, createRaid,
-    signupForRaid, signoffFromRaid,
+    signupForRaid, signoffFromRaid, confirmSignup, unconfirmSignup,
     getLatestNotifications
 }
 

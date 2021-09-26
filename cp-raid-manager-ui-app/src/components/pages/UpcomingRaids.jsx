@@ -34,7 +34,7 @@ export const UpcomingRaids = () => {
         service.getUpcomingRaids().then(documents => {
             setRaids(documents);
         }).catch(err => {
-            alert.error(err);
+            alert.error(err.message);
         }).finally(() => {
             setLoadingRaids(false);
         })
@@ -46,7 +46,7 @@ export const UpcomingRaids = () => {
         service.getRaid(selectedRaidId).then(data => {
             setRaidData(data);
         }).catch(err => {
-            console.log(err);
+            alert.error(err.message);
         }).finally(() => {
             setLoadingRaid(false);
         })
@@ -65,7 +65,7 @@ export const UpcomingRaids = () => {
             alert.removeAll();
             alert.success(`You have signed up for ${raidData?.raid?.name}!`)
         }).catch(err => {
-            console.log(err);
+            alert.error(err.message);
         });
     }
 
@@ -77,8 +77,32 @@ export const UpcomingRaids = () => {
             alert.removeAll();
             alert.success(`You have canceled your signup for ${raidData?.raid?.name}!`)
         }).catch(err => {
-            console.log(err);
+            alert.error(err.message);
         });
+    }
+
+    const confirmForRaid = (raidId, userId, job) => {
+        setLoadingRaid(true);
+        service.confirmSignup(raidId, { userId, job }).then(data => {
+            getRaids();
+            getRaid();
+            alert.removeAll();
+            alert.success(`Signup confirmed as ${job}!`)
+        }).catch(err => {
+            alert.error(err.message);
+        })
+    }
+
+    const unconfirmForRaid = (raidId, userId) => {
+        setLoadingRaid(true);
+        service.unconfirmSignup(raidId, { userId }).then(data => {
+            getRaids();
+            getRaid();
+            alert.removeAll();
+            alert.success(`Confirmed signup canceled!`)
+        }).catch(err => {
+            alert.error(err.message);
+        })
     }
 
     return (
@@ -93,7 +117,7 @@ export const UpcomingRaids = () => {
                     <Button className="mx-1" onClick={resetSelectedRaid} size="sm" variant="outline-danger"> <ImCross /> </Button>
                 </>
             }>
-                <RaidView raid={raidData?.raid} users={raidData?.users} loading={loadingRaid} signupForRaid={signupForRaid} signoffFromRaid={signoffFromRaid} />
+                <RaidView raid={raidData?.raid} users={raidData?.users} loading={loadingRaid} signupForRaid={signupForRaid} signoffFromRaid={signoffFromRaid} confirm={confirmForRaid} unconfirm={unconfirmForRaid} />
             </PageContainer>
             }
         </div>

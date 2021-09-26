@@ -5,6 +5,7 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregat
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.ConfirmedSignup;
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.Job;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.Signup;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ConfirmSignupRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.CreateRaidRequest;
@@ -27,7 +28,9 @@ import java.time.Clock;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.query.Query.query;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -138,7 +141,7 @@ public class RaidService {
         Signup signup = Signup.builder()
             .signupDate(now)
             .preference(request.getPreference())
-            .alternates(request.getAlternates())
+            .alternates(sortJobs(request.getAlternates()))
             .build();
 
         if (signups.containsKey(id)) {
@@ -217,5 +220,11 @@ public class RaidService {
         aggregate.setLog(link);
         aggregate.setUpdatedDate(OffsetDateTime.now(clock).format(dtf));
         return raidDao.upsert(aggregate);
+    }
+
+    private List<Job> sortJobs(List<Job> jobs) {
+        return jobs.stream()
+            .sorted(Enum::compareTo)
+            .collect(Collectors.toList());
     }
 }

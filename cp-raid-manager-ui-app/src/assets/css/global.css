@@ -103,6 +103,27 @@ body {
     border-color: #1076a5 !important;
 }
 
+.show > .btn-primary.dropdown-toggle {
+    color: #FFF;
+    background-color: #099fe4;
+    border-color: #1076a5;
+}
+
+.dropdown-menu {
+    background-color: #30353f;
+    border: 3px solid #00aeff;
+}
+
+.dropdown-item {
+    color: white;
+    background-color: #30353f;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    color: white;
+    background-color: #1076a5;
+}
+
 .animated-container {
     filter: opacity(0%);
     transform: translateY(-20px);
