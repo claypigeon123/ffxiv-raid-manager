@@ -42,6 +42,7 @@ pipeline {
                     docker.withRegistry('http://build.cp-sys.hu', 'pigeon-nexus') {
                         def cmd = "docker run -d ";
                         cmd += "--network=\"raid-manager\" "
+                        cmd += "--name ${env.NAME}"
                         cmd += "-e \"SPRING_DATA_MONGODB_HOST=${params.MONGODB_HOST}\" "
                         cmd += "-e \"SPRING_DATA_MONGODB_PORT=${params.MONGODB_PORT}\" "
                         cmd += "-e \"SPRING_DATA_MONGODB_DATABASE=${params.MONGODB_DATABASE}\" "
@@ -50,7 +51,7 @@ pipeline {
                         cmd += "-e \"RAID-MANAGER_APP_ARTIFICIAL-DELAY-MS=${params.ARTIFICIAL_DELAY_MS}\" "
                         cmd += "-e \"RAID-MANAGER_SECURITY_ALLOWED-ORIGINS=${params.ALLOWED_ORIGINS}\" "
                         cmd += "-e \"RAID-MANAGER_JWT_SECRET=${env.JWT_SECRET}\" "
-                        cmd += "build.cp-sys.hu/${NAME}:${params.VERSION}"
+                        cmd += "build.cp-sys.hu/${env.NAME}:${params.VERSION}"
 
                         sh "${cmd}"
                     }
