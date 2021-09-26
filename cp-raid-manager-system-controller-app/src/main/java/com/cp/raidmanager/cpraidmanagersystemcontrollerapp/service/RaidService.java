@@ -152,8 +152,8 @@ public class RaidService {
         signups.put(id, signup);
         raid.setSignups(signups);
         raid.setUpdatedDate(now);
-        return raidDao.upsert(raid)
-            .doOnSuccess(i -> emitter.emitSignup(user.getId(), raid.getName()));
+        return raidDao.upsert(raid);
+            //.doOnSuccess(i -> emitter.emitSignup(user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> signoffFromRaid(String now, UserAggregate user, RaidAggregate raid) {
@@ -171,8 +171,8 @@ public class RaidService {
         raid.setSignups(signups);
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
-        return raidDao.upsert(raid)
-            .doOnSuccess(i -> emitter.emitSignoff(user.getId(), raid.getName()));
+        return raidDao.upsert(raid);
+            //.doOnSuccess(i -> emitter.emitSignoff(user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> confirmSignupForRaid(String requester, String now, UserAggregate user, RaidAggregate raid, ConfirmSignupRequest request) {
@@ -193,8 +193,8 @@ public class RaidService {
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
 
-        return raidDao.upsert(raid)
-            .doOnSuccess(i -> emitter.emitSignupConfirmation(requester, user.getId(), raid.getName()));
+        return raidDao.upsert(raid);
+            //.doOnSuccess(i -> emitter.emitSignupConfirmation(requester, user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> unconfirmSignupForRaid(String requester, String now, UserAggregate user, RaidAggregate raid) {
@@ -209,8 +209,8 @@ public class RaidService {
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
 
-        return raidDao.upsert(raid)
-            .doOnSuccess(i -> emitter.emitSignupConfirmationCancellation(requester, user.getId(), raid.getName()));
+        return raidDao.upsert(raid);
+            //.doOnSuccess(i -> emitter.emitSignupConfirmationCancellation(requester, user.getId(), raid.getName()));
     }
 
     private Mono<RaidAggregate> attachLogToRaid(RaidAggregate aggregate, String link) {

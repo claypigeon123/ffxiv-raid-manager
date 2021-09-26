@@ -34,7 +34,7 @@ public class NotificationsController implements WebSocketHandler {
         this.lastEvents = lastEvents;
     }
 
-    @GetMapping
+    //@GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Flux<Event> getLatest() {
         log.info("Request to get latest notifications");
@@ -43,8 +43,10 @@ public class NotificationsController implements WebSocketHandler {
 
     @Override
     public Mono<Void> handle(WebSocketSession session) {
-        return events
+        /*return events
             .doOnNext(event -> sendMessage(session, event))
+            .then();*/
+        return Mono.empty()
             .then();
     }
 
