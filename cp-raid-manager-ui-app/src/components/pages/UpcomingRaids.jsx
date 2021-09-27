@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAlert } from 'react-alert';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { ImCross, ImSpinner11 } from 'react-icons/im';
@@ -24,6 +24,8 @@ export const UpcomingRaids = () => {
     const [loadingRaids, setLoadingRaids] = useState(false);
     const [loadingRaid, setLoadingRaid] = useState(false);
 
+    const scrollRef = useRef(null);
+
     useEffect(() => {
         getRaids();
 
@@ -39,6 +41,10 @@ export const UpcomingRaids = () => {
     useEffect(() => {
         if (selectedRaidId !== undefined) getRaid();
     }, [selectedRaidId]) //eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        scrollRef?.current?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    })
 
     const getRaids = () => {
         setLoadingRaids(true);
@@ -123,6 +129,7 @@ export const UpcomingRaids = () => {
             <PageContainer title="Upcoming Raids" icon={<GiCrossedSwords />}>
                 <RaidsTable raids={raids} selectedRaidId={selectedRaidId} setSelectedRaidId={setSelectedRaidId} loading={loadingRaids} />
             </PageContainer>
+            <div id="scrollTarget" ref={scrollRef} />
             { selectedRaidId !== undefined &&
             <PageContainer title={raidData ? raidData?.raid?.name : "Loading..."} icon={<GiCrossedSwords />} tip={
                 <>
