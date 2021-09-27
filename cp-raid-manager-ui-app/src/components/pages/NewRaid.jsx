@@ -49,7 +49,7 @@ export const NewRaid = () => {
 
     return (
         <div>
-            <PageContainer title="Post New Raid" icon={<FaCalendarPlus />}>
+            <PageContainer title="Post New Raid" icon={<FaCalendarPlus />} infotext="People who have opted in to email notifications will get an email after you've created the raid.">
                 <Form onSubmit={onSubmit}>
                     <ControlledFormTextbox label="Raid Name" placeholder="Raid Name" icon={<GiCrossedSwords />} value={name} onChange={setName} />
                     <ControlledFormDatePicker label="Raid Date / Time" icon={<BsCalendarFill />} date={date} setDate={setDate} minDate={new Date()} />

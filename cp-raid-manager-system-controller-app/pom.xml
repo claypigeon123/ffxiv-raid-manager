@@ -12,7 +12,7 @@
 
     <groupId>com.cp.raidmanager</groupId>
     <artifactId>cp-raid-manager-system-controller-app</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
 
     <name>cp-raid-manager-system-controller-app</name>
     <description>CP Raid Manager System Controller</description>
@@ -63,6 +63,14 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
         <dependency>

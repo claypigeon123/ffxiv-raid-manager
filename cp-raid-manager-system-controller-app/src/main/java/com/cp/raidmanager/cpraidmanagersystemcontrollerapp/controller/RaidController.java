@@ -93,4 +93,11 @@ public class RaidController {
         log.info("Request to attach log to raid {}", raidId);
         return raidService.attachLog(raidId, request.getLink());
     }
+
+    @DeleteMapping("/{raidId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Mono<Void> deleteRaid(@PathVariable String raidId) {
+        log.info("Request to delete raid {}", raidId);
+        return raidService.delete(raidId);
+    }
 }

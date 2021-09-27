@@ -19,6 +19,20 @@ spring:
             repositories:
                 type: reactive
             uri: mongodb://username:password@localhost:27017/RAID_MANAGER_DB?authSource=admin&authMechanism=SCRAM-SHA-1
+    mail:
+        host: smtp_host
+        port: 587
+        username: username
+        password: password
+        properties:
+            mail:
+                smtp:
+                    auth: true
+                    connectiontimeout: 5000
+                    timeout: 5000
+                    writetimeout: 5000
+                    starttls:
+                        enable: true
 
 
 ---

@@ -21,6 +21,10 @@ public class UserAggregate {
 
     private String username;
 
+    private String email;
+
+    private Boolean wantsEmails;
+
     @JsonIgnore
     private String password;
 
@@ -39,6 +43,8 @@ public class UserAggregate {
             .password(hash)
             .server("change me")
             .inGameName("change me")
+            .email("change me")
+            .wantsEmails(true)
             .role(Role.USER)
             .build();
     }
