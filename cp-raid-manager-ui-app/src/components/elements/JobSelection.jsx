@@ -30,9 +30,9 @@ export const JobSelection = ({ value, setValue, multiple = false }) => {
     const displayIcons = () => {
         return Object.entries(JOBS).map(([key, value], index) => {
             return (
-                <Col key={index} className={`anim-200 job-icon ${checkJob(key)}`} xs="2" onClick={() => selectJob(key)}> 
-                    <img className={`anim-200`} width="50" src={value.icon} alt={`${key}-icon`} /> 
-                    {' '}{value.name} 
+                <Col key={index} className={`anim-200 job-icon ${checkJob(key)} text-center`} xs="3" lg="2" onClick={() => selectJob(key)}> 
+                    <div><img className={`anim-200`} width="50" src={value.icon} alt={`${key}-icon`} /></div>
+                    <div> {value.name} </div>
                 </Col>
             );
         })

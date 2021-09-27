@@ -67,6 +67,11 @@ body {
     font-size: x-large;
 }
 
+.text-black {
+    color:rgb(19, 19, 19);
+    text-shadow: 1px 1px 3px white;
+}
+
 .bg-dodo {
     background-color: #1076a5;
 }
@@ -192,12 +197,12 @@ body {
 .selected-table-row {
     cursor: pointer;
     margin-bottom: 5px;
-    background-color: #1076a5;
+    background-color: #31516b;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
     color: white;
     font-weight: bold;
-    transform: scale(1.03) skew(-8deg);
+    transform: scale(1.02);
 }
 
 .table-row:hover {
@@ -278,7 +283,7 @@ body {
 
 .job-selected {
     background-color: #00aeff;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .job-selected:hover {

@@ -35,15 +35,7 @@ export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid,
 
     return (
         <>
-            <Tabs activeKey={tabKey} onSelect={(k) => setTabKey(k)} className="border-dodo">
-                { !old &&
-                <Tab eventKey="6" title={<div> <FaCog /> Raid Leader Controls </div>} tabClassName="dodo-tab dodo-tab-admin text-danger bg-very-dark">
-                    <>
-                        {/* <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Raid Leader Controls </div> */}
-                        <RaidLeaderControls raid={raid} users={users} confirm={confirm} unconfirm={unconfirm} />
-                    </>
-                </Tab>
-                }
+            <Tabs activeKey={tabKey} onSelect={(k) => setTabKey(k)} className="border-dodo flex-column flex-md-row">
                 <Tab eventKey="1" title={<div> <FaInfoCircle /> Info </div>} tabClassName="dodo-tab">
                     <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Information </div>
                     <Row className="justify-content-around text-center">
@@ -123,6 +115,14 @@ export const RaidView = ({ raid, users, loading, signupForRaid, signoffFromRaid,
                 <Tab eventKey="5" title={<div> <FaBook /> Log </div>} tabClassName="dodo-tab">
                     <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Raid Log </div>
                     {displayRaidLog()}
+                </Tab>
+                }
+                { !old &&
+                <Tab eventKey="6" title={<div> <FaCog /> Raid Leader Controls </div>} tabClassName="dodo-tab dodo-tab-admin text-danger bg-very-dark">
+                    <>
+                        {/* <div className="text-dodo-bolder mt-5 mb-3 border-bottom border-muted"> Raid Leader Controls </div> */}
+                        <RaidLeaderControls raid={raid} users={users} confirm={confirm} unconfirm={unconfirm} />
+                    </>
                 </Tab>
                 }
             </Tabs>
