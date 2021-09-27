@@ -24,7 +24,7 @@ export const Home = () => {
         return () => {
             clearInterval(interval);
         }
-    }, [])
+    }, []) //eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchData = () => {
         alert.removeAll();
