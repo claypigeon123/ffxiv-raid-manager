@@ -15,10 +15,10 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRa
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.websocket.EventEmitterComponent;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -43,7 +43,8 @@ public class RaidService {
     private final UserAggregatesRepository userDao;
     private final Clock clock;
     private final DateTimeFormatter dtf;
-    private final EventEmitterComponent emitter;
+    private final MailerService mailer;
+    //private final EventEmitterComponent emitter;
 
     public Mono<GetRaidsResponse> getCurrentRaids() {
         Query query = new Query();
@@ -87,7 +88,10 @@ public class RaidService {
 
     public Mono<RaidAggregate> createRaid(CreateRaidRequest request, String createdBy) {
         return Mono.just(RaidAggregate.fromRequest(request, createdBy, OffsetDateTime.now(clock).format(dtf)))
-            .flatMap(raidDao::upsert);
+            .flatMap(raidDao::upsert)
+            .flatMap(raidAggregate -> sendRaidPostedEmails(createdBy, raidAggregate)
+                .thenReturn(raidAggregate)
+            );
     }
 
     public Mono<RaidAggregate> signup(String raidId, RaidSignupRequest request, String requester) {
@@ -115,6 +119,11 @@ public class RaidService {
             .flatMap(raid -> attachLogToRaid(raid, link));
     }
 
+    public Mono<Void> delete(String raidId) {
+        return findRaid(raidId)
+            .flatMap(raid -> raidDao.deleteById(raid.getId()));
+    }
+
     // --- helpers ---
 
     private Mono<Tuple3<String, UserAggregate, RaidAggregate>> findUserAndRaid(String raidId, String userId) {
@@ -133,6 +142,18 @@ public class RaidService {
     private Mono<RaidAggregate> findRaid(String raidId) {
         return raidDao.findById(raidId)
             .switchIfEmpty(Mono.error(new AggregateNotFoundException()));
+    }
+
+    private Mono<Void> sendRaidPostedEmails(String from, RaidAggregate raid) {
+        return userDao.query(Query.query(where("wantsEmails").is(true)))
+            .doOnNext(user -> mailer.sendRaidPosted(from, user, raid))
+            .then();
+    }
+
+    private Mono<Void> sendConfirmationEmail(String from, UserAggregate to, RaidAggregate raid) {
+        return Mono.just(from)
+            .doOnNext(approver -> mailer.sendSignupConfirmed(approver, to, raid))
+            .then();
     }
 
     private Mono<RaidAggregate> signupForRaid(String now, UserAggregate user, RaidAggregate raid, RaidSignupRequest request) {
@@ -196,7 +217,10 @@ public class RaidService {
         raid.setConfirmedSignups(confirmedSignups);
         raid.setUpdatedDate(now);
 
-        return raidDao.upsert(raid);
+        return raidDao.upsert(raid)
+            .flatMap(raidAggregate -> sendConfirmationEmail(requester, user, raidAggregate)
+                .thenReturn(raidAggregate)
+            );
             //.doOnSuccess(i -> emitter.emitSignupConfirmation(requester, user.getId(), raid.getName()));
     }
 

@@ -56,6 +56,12 @@ body {
     font-size: larger;
 }
 
+.text-dodo-bolder-light {
+    color: #14a5e9 !important;
+    font-weight: 600;
+    font-size: larger;
+}
+
 .text-dodo-header {
     font-weight: 600;
     font-size: x-large;
@@ -183,6 +189,17 @@ body {
     padding-bottom: 0.4rem;
 }
 
+.selected-table-row {
+    cursor: pointer;
+    margin-bottom: 5px;
+    background-color: #1076a5;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    color: white;
+    font-weight: bold;
+    transform: scale(1.03) skew(-8deg);
+}
+
 .table-row:hover {
     background-color: #383d47;
 }
@@ -196,6 +213,10 @@ body {
 
 .bg-very-dark {
     background-color: #22262e !important;
+}
+
+.bg-not-very-dark {
+    background-color: #1e2229;
 }
 
 .react-datetime-picker__wrapper, .react-datetime-picker__inputGroup__input, .react-datetime-picker__inputGroup > input, .react-datetime-picker__button {
@@ -290,4 +311,25 @@ body {
 
 .dodo-tab-admin {
     border-bottom: 1px solid #0f4158 !important;
+}
+
+.custom-toggler.react-toggle--checked .react-toggle-track {
+    background-color: #1076a5;
+}
+
+.custom-toggler.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+    background-color: #14a5e9;
+}
+
+.custom-toggler.react-toggle--focus .react-toggle-thumb {
+    box-shadow: 0px 0px 2px 3px #14a5e9;
+}
+
+.custom-toggler.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+    box-shadow: 0px 0px 5px 5px #14a5e9;
+}
+
+.custom-toggler.react-toggle--checked .react-toggle-thumb {
+    left: 27px;
+    border-color: #1e2229;
 }

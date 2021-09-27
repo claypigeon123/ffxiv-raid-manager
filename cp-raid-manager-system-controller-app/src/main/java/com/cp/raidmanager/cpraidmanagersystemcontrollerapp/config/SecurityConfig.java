@@ -91,6 +91,10 @@ public class SecurityConfig {
                     "/raids/*/unconfirm-signup"
                 ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
 
+                .pathMatchers(HttpMethod.DELETE,
+                    "/**"
+                ).hasAnyAuthority(RAID_LEADER.toString(), ADMIN.toString())
+
                 .anyExchange().authenticated()
             )
 

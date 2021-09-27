@@ -1,10 +1,10 @@
 import { RaidTableRow } from "../elements/RaidTableRow";
 import { SmallSpinner } from '../elements/SmallSpinner';
 
-export const RaidsTable = ({ raids, setSelectedRaidId, loading, small = false }) => {
+export const RaidsTable = ({ raids, selectedRaidId, setSelectedRaidId, loading, small = false }) => {
 
     const drawTableRows = () => raids.map((item, index) => (
-        <RaidTableRow key={index} raid={item} open={() => setSelectedRaidId(item.id)} small={small} />
+        <RaidTableRow key={index} raid={item} open={() => setSelectedRaidId(item.id)} small={small} selected={item.id === selectedRaidId} />
     ));
 
     if (loading) {

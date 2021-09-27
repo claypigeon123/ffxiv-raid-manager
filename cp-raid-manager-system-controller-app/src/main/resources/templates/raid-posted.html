@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Dodo Raid Manager Email</title>
+
+  <style type="text/css">
+    @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+    html,body {font-family:'Poppins',sans-serif;}
+    .base {background-color:#1e2229;color:#fff !important;text-align:center;padding:1.5rem;}
+    .header {font-size: xxx-large; font-weight: bolder; margin-bottom: 2rem;}
+    .info {margin-bottom: 0.3rem;}
+    .text-dodo-bolder {color:#1d88b9;font-weight:600;font-size:larger;}
+    .text-dodo-bold {color:#1d88b9;font-weight:600;font-size:large;}
+    .logo {background-color: #1d88b9; padding: 0.7rem; border-radius: 10rem;}
+    .link {cursor: pointer; background-color: #1d88b9; border-color: #1076a5; border-radius: 1rem; padding: 0.4rem; transition: all 200ms;}
+    .link:hover {background-color: #099fe4; border-color: #1076a5;}
+    .footer {margin-top: 4rem; color: #6c757d;}
+    a, a:visited, a:active, a:focus {text-decoration: none; color: white !important;}
+  </style>
+</head>
+
+<body>
+  <div class="base">
+    <img class="logo" src="dodologo.png" th:src="|cid:${logo}|" height="80" />
+    <div class="header text-dodo-bolder">
+      Heads up <span th:text="${recipient}" >Recipient</span>, a new raid was posted by <span th:text="${poster}" >Poster</span>!
+    </div>
+
+    <div style="margin-bottom: 3rem; text-align: center;">
+      <div class="info">
+        <div class="text-dodo-bold"> Raid name: </div>
+        <div th:text="${raidName}" > RaidName </div>
+      </div>
+      <div class="info">
+        <div class="text-dodo-bold"> Taking place on: </div>
+        <div th:text="${raidDateTime}"> RaidDateTime </div>
+      </div>
+    </div>
+
+    <a th:href="${link}" target="_blank" class="link">Click here to be taken to your upcoming raids!</a>
+
+    <div class="footer">
+      <div style="margin-bottom: 0.5rem">Yours truly,</div>
+      <div>Your favourite raid manager by Pigeon</div>
+    </div>
+  </div>
+</body>
+
+</html>

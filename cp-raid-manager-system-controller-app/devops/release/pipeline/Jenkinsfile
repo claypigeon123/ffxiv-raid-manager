@@ -9,6 +9,8 @@ pipeline {
         MONGODB_USERNAME = credentials('mongodb-username')
         MONGODB_PASSWORD = credentials('mongodb-password')
         JWT_SECRET = credentials('jwt-secret')
+        SMTP_USERNAME = credentials('smtp-username')
+        SMTP_PASSWORD = credentials('smtp-password')
     }
 
     agent any
@@ -26,6 +28,7 @@ pipeline {
         string(name: 'ARTIFICIAL_DELAY_MS', defaultValue: '0', description: 'Artificial delay to apply (in ms)')
         string(name: 'ALLOWED_ORIGINS', defaultValue: 'https://dodo.cp-sys.hu', description: 'Comma separated list of allowed origins')
         string(name: 'PROXY', defaultValue: 'pigeon-nginx', description: 'Name of the container to reload after operations')
+        string(name: 'SMTP_HOST', defaultValue: 'smtp.rackhost.hu', description: 'Host of Email provider to use')
     }
 
     stages {
@@ -55,6 +58,9 @@ pipeline {
                         cmd += "-e \"RAIDMANAGER_APP_ARTIFICIALDELAYMS=${params.ARTIFICIAL_DELAY_MS}\" "
                         cmd += "-e \"RAIDMANAGER_SECURITY_ALLOWEDORIGINS=${params.ALLOWED_ORIGINS}\" "
                         cmd += '-e \"RAIDMANAGER_JWT_SECRET=$JWT_SECRET\" '
+                        cmd += "-e \"SPRING_MAIL_HOST=${params.SMTP_HOST}\" "
+                        cmd += '-e \"SPRING_MAIL_USERNAME=$SMTP_USERNAME\" '
+                        cmd += '-e \"SPRING_MAIL_PASSWORD=$SMTP_PASSWORD\" '
                         cmd += "build.cp-sys.hu/${env.NAME}:${params.VERSION}"
 
                         sh "${cmd}"

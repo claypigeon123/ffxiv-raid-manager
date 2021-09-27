@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +19,9 @@ public class ChangeUserDetailsRequest {
     private String server;
 
     private String inGameName;
+
+    @Email
+    private String email;
+
+    private Boolean wantsEmails;
 }

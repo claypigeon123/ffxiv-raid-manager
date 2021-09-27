@@ -3,15 +3,18 @@ import { useAlert } from 'react-alert';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { ImCross, ImSpinner11 } from 'react-icons/im';
 import { Button } from 'react-bootstrap';
+import query from 'query-string';
 
 import service from '../../service/BackendService';
 import { PageContainer } from "../fragments/PageContainer";
 import { RaidsTable } from '../fragments/RaidsTable';
 import { RaidView } from '../fragments/RaidView';
+import { useHistory } from 'react-router';
 
 export const UpcomingRaids = () => {
 
     const alert = useAlert();
+    const history = useHistory();
 
     const [raids, setRaids] = useState([]);
 
@@ -23,6 +26,14 @@ export const UpcomingRaids = () => {
 
     useEffect(() => {
         getRaids();
+
+        const params = query.parse(window.location.search);
+        if (params?.raid) {
+            setSelectedRaidId(params?.raid);
+            history.replace({
+                search: undefined
+            })
+        }
     }, []) //eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -47,6 +58,8 @@ export const UpcomingRaids = () => {
             setRaidData(data);
         }).catch(err => {
             alert.error(err.message);
+            setSelectedRaidId(undefined);
+            setRaidData(undefined);
         }).finally(() => {
             setLoadingRaid(false);
         })
@@ -108,12 +121,12 @@ export const UpcomingRaids = () => {
     return (
         <div>
             <PageContainer title="Upcoming Raids" icon={<GiCrossedSwords />}>
-                <RaidsTable raids={raids} setSelectedRaidId={setSelectedRaidId} loading={loadingRaids} />
+                <RaidsTable raids={raids} selectedRaidId={selectedRaidId} setSelectedRaidId={setSelectedRaidId} loading={loadingRaids} />
             </PageContainer>
             { selectedRaidId !== undefined &&
             <PageContainer title={raidData ? raidData?.raid?.name : "Loading..."} icon={<GiCrossedSwords />} tip={
                 <>
-                    <Button className="mx-1 btn-dodo" onClick={() => getRaid()} size="sm"> <ImSpinner11 /> </Button>
+                    <Button className="mx-1 btn-dodo" onClick={() => { getRaids(); getRaid(); }} size="sm"> <ImSpinner11 /> </Button>
                     <Button className="mx-1" onClick={resetSelectedRaid} size="sm" variant="outline-danger"> <ImCross /> </Button>
                 </>
             }>

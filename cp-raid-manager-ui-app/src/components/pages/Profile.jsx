@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useAlert } from 'react-alert';
 import { Form, Button, Col } from 'react-bootstrap';
-import { FaUser, FaLockOpen, FaSave, FaTrashAlt, FaServer } from 'react-icons/fa';
+import { FaUser, FaLockOpen, FaSave, FaTrashAlt, FaServer, FaEnvelope } from 'react-icons/fa';
 import { GiCrossedSwords } from 'react-icons/gi';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { userDetailsChangedAction } from '../../redux/actions/Actions';
 import service from '../../service/BackendService';
 import { ControlledFormTextbox } from '../elements/ControlledFormTextbox';
+import { ControlledFormToggler } from '../elements/ControlledFormToggler';
 
 import { PageContainer } from "../fragments/PageContainer";
 
@@ -19,6 +20,8 @@ export const Profile = () => {
     const user = useSelector(state => state.user);
 
     const [server, setServer] = useState(user.server);
+    const [email, setEmail] = useState(user.email);
+    const [wantsEmails, setWantsEmails] = useState(user.wantsEmails);
     const [inGameName, setInGameName] = useState(user.inGameName);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -34,23 +37,26 @@ export const Profile = () => {
         }
     }
 
-    const areThereChanges = inGameName === user.inGameName && password.length === 0 && confirmPassword.length === 0;
+    const areThereChanges = (
+        inGameName === user.inGameName && 
+        email === user.email &&
+        wantsEmails === user.wantsEmails &&
+        password.length === 0 && 
+        confirmPassword.length === 0 
+    );
 
     const onSubmit = (e) => {
         e.preventDefault();
 
         let payload = {};
 
-        if (inGameName !== user.inGameName) {
-            payload.inGameName = inGameName;
-        }
+        if (inGameName.trim() !== user.inGameName) payload.inGameName = inGameName.trim();
+        if (server.trim() !== user.server) payload.server = server.trim();
+        if (email.trim() !== user.email) payload.email = email.trim();
+        if (wantsEmails !== user.wantsEmails) payload.wantsEmails = wantsEmails;
 
-        if (server !== user.server) {
-            payload.server = server;
-        }
-
-        if (password.length !== 0 || confirmPassword.length !== 0) {
-            if (password !== confirmPassword) {
+        if (password.trim().length !== 0 || confirmPassword.trim().length !== 0) {
+            if (password.trim() !== confirmPassword.trim()) {
                 alert.removeAll();
                 alert.error("Passwords didn't match");
                 setPassword("");
@@ -92,9 +98,12 @@ export const Profile = () => {
             <PageContainer title={"Profile"} icon={<FaUser />}>
                 <Form onSubmit={onSubmit}>
                     <ControlledFormTextbox label="Username" value={user.username} disabled icon={<FaUser />} />
+                    <ControlledFormTextbox type="email" label="Email Address" value={email} onChange={setEmail} icon={<FaEnvelope />} />
+                    <ControlledFormToggler label="Receive notifications" value={wantsEmails} onChange={setWantsEmails} />
+                    <div className="pb-4" />
                     <ControlledFormTextbox label="Server (e.g. Lich)" value={server} onChange={setServer} icon={<FaServer />} />
                     <ControlledFormTextbox label="In-game Name" value={inGameName} onChange={setInGameName} icon={<GiCrossedSwords />} />
-                    <div className="py-3" />
+                    <div className="py-4" />
                     <ControlledFormTextbox type="password" label="New Password" placeholder="New Password" value={password} onChange={setPassword} icon={<FaLockOpen />} />
                     <ControlledFormTextbox type="password" label="Confirm New Password" placeholder="Confirm New Password" value={confirmPassword} onChange={setConfirmPassword} icon={<FaLockOpen />} />
                     <div className="py-3" />

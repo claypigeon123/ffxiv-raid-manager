@@ -94,6 +94,14 @@ public class UserService {
             aggregate.setInGameName(request.getInGameName());
         }
 
+        if (request.getEmail() != null) {
+            aggregate.setEmail(request.getEmail());
+        }
+
+        if (request.getWantsEmails() != null) {
+            aggregate.setWantsEmails(request.getWantsEmails());
+        }
+
         aggregate.setUpdatedDate(OffsetDateTime.now(clock).format(dtf));
         return userDao.upsert(aggregate);
     }
