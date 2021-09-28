@@ -18,10 +18,10 @@ import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestE
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.function.Tuple3;
 
 import java.time.Clock;
@@ -89,9 +89,7 @@ public class RaidService {
     public Mono<RaidAggregate> createRaid(CreateRaidRequest request, String createdBy) {
         return Mono.just(RaidAggregate.fromRequest(request, createdBy, OffsetDateTime.now(clock).format(dtf)))
             .flatMap(raidDao::upsert)
-            .flatMap(raidAggregate -> sendRaidPostedEmails(createdBy, raidAggregate)
-                .thenReturn(raidAggregate)
-            );
+            .doOnNext(raidAggregate -> sendRaidPostedEmails(createdBy, raidAggregate).subscribe());
     }
 
     public Mono<RaidAggregate> signup(String raidId, RaidSignupRequest request, String requester) {
@@ -147,13 +145,15 @@ public class RaidService {
     private Mono<Void> sendRaidPostedEmails(String from, RaidAggregate raid) {
         return userDao.query(Query.query(where("wantsEmails").is(true)))
             .doOnNext(user -> mailer.sendRaidPosted(from, user, raid))
-            .then();
+            .then()
+            .subscribeOn(Schedulers.parallel());
     }
 
     private Mono<Void> sendConfirmationEmail(String from, UserAggregate to, RaidAggregate raid) {
-        return Mono.just(from)
-            .doOnNext(approver -> mailer.sendSignupConfirmed(approver, to, raid))
-            .then();
+        return Mono.create(sink -> {
+            mailer.sendSignupConfirmed(from, to, raid);
+            sink.success();
+        }).then().subscribeOn(Schedulers.parallel());
     }
 
     private Mono<RaidAggregate> signupForRaid(String now, UserAggregate user, RaidAggregate raid, RaidSignupRequest request) {
@@ -218,9 +218,7 @@ public class RaidService {
         raid.setUpdatedDate(now);
 
         return raidDao.upsert(raid)
-            .flatMap(raidAggregate -> sendConfirmationEmail(requester, user, raidAggregate)
-                .thenReturn(raidAggregate)
-            );
+            .doOnNext(raidAggregate -> sendConfirmationEmail(requester, user, raidAggregate).subscribe());
             //.doOnSuccess(i -> emitter.emitSignupConfirmation(requester, user.getId(), raid.getName()));
     }
 

@@ -4,8 +4,8 @@ import {
     AUTH, RENEW,
     GET_USER, BATCH_GET_USERS, REGISTER_NEW_USER, RESET_PASSWORD, CHANGE_USER_DETAILS,
     GET_UPCOMING_RAIDS, GET_OLD_RAIDS, CREATE_RAID, GET_RAID,
-    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, CONFIRM_SIGNUP, UNCONFIRM_SIGNUP,
-    LATEST_NOTIFICATIONS
+    SIGNUP_FOR_RAID, SIGNOFF_FROM_RAID, CONFIRM_SIGNUP, UNCONFIRM_SIGNUP, DELETE_RAID,
+    LATEST_NOTIFICATIONS,
 } from './URIs';
 
 // Auth & related
@@ -147,6 +147,15 @@ const unconfirmSignup = (raidId, payload) => {
     })
 }
 
+const deleteRaid = (raidId) => {
+    const uri = makeUri(DELETE_RAID, [{ name: "id", value: raidId }]);
+    return axios.delete(uri).then(res => {
+        return res?.data;
+    }).catch(err => {
+        throw err?.response?.data?.msg ? Error(`${err.response.data.msg}!`) : Error(err.message);
+    })
+}
+
 // Misc
 const getLatestNotifications = () => {
     return axios.get(LATEST_NOTIFICATIONS).then(res => {
@@ -160,7 +169,7 @@ const service = {
     auth, renew,
     getUser, batchGetUsers, register, resetPassword, changeUserDetails,
     getUpcomingRaids, getOldRaids, getRaid, createRaid,
-    signupForRaid, signoffFromRaid, confirmSignup, unconfirmSignup,
+    signupForRaid, signoffFromRaid, confirmSignup, unconfirmSignup, deleteRaid,
     getLatestNotifications
 }
 

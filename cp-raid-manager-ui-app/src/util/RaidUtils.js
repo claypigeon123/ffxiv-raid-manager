@@ -71,16 +71,18 @@ export const ROLES = {
     }
 }
 
-export const displayConfirmedSignups = (amount) => {
+export const displayConfirmedSignups = (amount, withFlavour = false) => {
+    const flavour = withFlavour ? (amount === 1 ? "confirmed signup" : "confirmed signups" ) : "";
+
     if (amount < 8) {
-        return <div className="text-warning"> <AiFillWarning style={{verticalAlign: 'sub'}} size="20" /> {amount} </div>
+        return <span className="text-warning"><AiFillWarning style={{verticalAlign: 'sub'}} size="20" /> {amount} {flavour} </span>
     }
 
     if (amount === 8) {
-        return <div className="text-success"> <AiFillCheckCircle style={{verticalAlign: 'sub'}} size="20" /> {amount} </div>
+        return <span className="text-success"><AiFillCheckCircle style={{verticalAlign: 'sub'}} size="20" /> {amount} {flavour} </span>
     }
 
-    return <div className="text-danger"> <AiFillCloseCircle style={{verticalAlign: 'sub'}} size="20" /> {amount} </div>
+    return <span className="text-danger"><AiFillCloseCircle style={{verticalAlign: 'sub'}} size="20" /> {amount} {flavour} </span>
 }
 
 export const compareSignups = (a, b) => {
