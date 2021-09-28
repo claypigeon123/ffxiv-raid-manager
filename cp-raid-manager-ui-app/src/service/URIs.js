@@ -1,28 +1,33 @@
-const prefix =                                                  '';
+const PREFIX =                                                  '';
 
 // Auth & related
-export const AUTH =                                             `${prefix}/public/auth`;
-export const RENEW =                                            `${prefix}/public/renew`;
+const PUBLIC_PREFIX =                                           `${PREFIX}/public`
+export const AUTH =                                             `${PUBLIC_PREFIX}/auth`;
+export const RENEW =                                            `${PUBLIC_PREFIX}/renew`;
 
 // Users
-export const GET_USER =                                         `${prefix}/users/{id}`;
-export const BATCH_GET_USERS =                                  `${prefix}/users`;
-export const REGISTER_NEW_USER =                                `${prefix}/users/register`;
-export const RESET_PASSWORD =                                   `${prefix}/users/reset-password`
-export const CHANGE_USER_DETAILS =                              `${prefix}/users`;
+const USERS_PREFIX =                                            `${PREFIX}/users`
+export const GET_USER =                                         `${USERS_PREFIX}/{id}`;
+export const BATCH_GET_USERS =                                  `${USERS_PREFIX}`;
+export const REGISTER_NEW_USER =                                `${USERS_PREFIX}/register`;
+export const RESET_PASSWORD =                                   `${USERS_PREFIX}/reset-password`
+export const CHANGE_USER_DETAILS =                              `${USERS_PREFIX}`;
 
 // Raids
-export const GET_UPCOMING_RAIDS =                               `${prefix}/raids/query/current`;
-export const GET_OLD_RAIDS =                                    `${prefix}/raids/query/old`;
-export const GET_RAID =                                         `${prefix}/raids/{id}`;
-export const CREATE_RAID =                                      `${prefix}/raids`;
-export const SIGNUP_FOR_RAID =                                  `${prefix}/raids/{id}/signup`;
-export const SIGNOFF_FROM_RAID =                                `${prefix}/raids/{id}/signoff`;
-export const CONFIRM_SIGNUP =                                   `${prefix}/raids/{id}/confirm-signup`;
-export const UNCONFIRM_SIGNUP =                                 `${prefix}/raids/{id}/unconfirm-signup`;
+const RAIDS_PREFIX =                                            `${PREFIX}/raids`;
+export const GET_UPCOMING_RAIDS =                               `${RAIDS_PREFIX}/query/current`;
+export const GET_OLD_RAIDS =                                    `${RAIDS_PREFIX}/query/old`;
+export const GET_RAID =                                         `${RAIDS_PREFIX}/{id}`;
+export const CREATE_RAID =                                      `${RAIDS_PREFIX}`;
+export const SIGNUP_FOR_RAID =                                  `${RAIDS_PREFIX}/{id}/signup`;
+export const SIGNOFF_FROM_RAID =                                `${RAIDS_PREFIX}/{id}/signoff`;
+export const CONFIRM_SIGNUP =                                   `${RAIDS_PREFIX}/{id}/confirm-signup`;
+export const UNCONFIRM_SIGNUP =                                 `${RAIDS_PREFIX}/{id}/unconfirm-signup`;
+export const DELETE_RAID =                                      `${RAIDS_PREFIX}/{id}`;
 
 // Misc
-export const LATEST_NOTIFICATIONS =                             `${prefix}/notifications`
+const MISC_PREFIX =                                             `${PREFIX}`
+export const LATEST_NOTIFICATIONS =                             `${MISC_PREFIX}/notifications`
 
 export const makeUri = (baseUri, pathVariables) => {
     let uri = "".concat(baseUri);

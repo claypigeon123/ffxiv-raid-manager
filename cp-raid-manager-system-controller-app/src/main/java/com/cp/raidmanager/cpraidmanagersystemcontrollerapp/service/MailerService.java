@@ -1,5 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
+import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.SecurityProperties;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class MailerService {
 
     private final JavaMailSender mailer;
     private final SpringTemplateEngine springTemplateEngine;
+    private final SecurityProperties properties;
 
     public void sendRaidPosted(String from, UserAggregate to, RaidAggregate raid) {
         log.info("to: {}", to);
