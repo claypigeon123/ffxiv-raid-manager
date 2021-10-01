@@ -1,5 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Configuration
 @NoArgsConstructor
+@AllArgsConstructor
 @ConfigurationProperties(prefix = "raid-manager.security")
 public class SecurityProperties {
     private Boolean allowCredentials;

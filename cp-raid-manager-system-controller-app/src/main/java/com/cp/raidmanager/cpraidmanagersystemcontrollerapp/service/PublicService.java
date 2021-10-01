@@ -55,7 +55,7 @@ public class PublicService {
     }
 
     private Mono<ResponseEntity<UserAggregate>> generateTokenIntoEntity(UserAggregate user) {
-        long now = OffsetDateTime.now(clock).toInstant().getEpochSecond() * 1000;
+        long now = OffsetDateTime.now(clock).toInstant().toEpochMilli();
         String token = Jwts.builder()
             .setSubject(user.getId())
             .claim("role", user.getRole().toString())

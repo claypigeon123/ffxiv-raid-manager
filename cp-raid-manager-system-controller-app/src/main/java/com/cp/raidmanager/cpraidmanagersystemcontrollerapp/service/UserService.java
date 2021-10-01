@@ -31,7 +31,8 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public Mono<UserAggregate> findOne(String value) {
-        return userDao.findById(value);
+        return userDao.findById(value)
+            .switchIfEmpty(Mono.error(new AggregateNotFoundException()));
     }
 
     public Flux<UserAggregate> batchFind(List<String> ids) {

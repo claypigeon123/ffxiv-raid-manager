@@ -19,9 +19,22 @@
 
     <properties>
         <java.version>11</java.version>
+        <groovy.version>3.0.8</groovy.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-bom</artifactId>
+                <version>2.0-groovy-3.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <distributionManagement>
         <snapshotRepository>
@@ -119,6 +132,11 @@
         <dependency>
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
