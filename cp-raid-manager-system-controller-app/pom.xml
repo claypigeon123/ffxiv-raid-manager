@@ -35,10 +35,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-couchbase-reactive</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb-reactive</artifactId>
@@ -100,6 +96,13 @@
             <artifactId>jjwt-jackson</artifactId>
             <version>0.11.2</version>
             <scope>runtime</scope>
+        </dependency>
+
+        <!-- CUSTOM -->
+        <dependency>
+            <groupId>com.cp.raidmanager</groupId>
+            <artifactId>cp-raid-manager-domain</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- TEST -->

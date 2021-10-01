@@ -22,7 +22,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.time.Duration;
 
-import static com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.model.Role.*;
+import static com.cp.raidmanager.raidmanagerdomain.model.Role.*;
 
 @EnableWebFluxSecurity
 @RequiredArgsConstructor

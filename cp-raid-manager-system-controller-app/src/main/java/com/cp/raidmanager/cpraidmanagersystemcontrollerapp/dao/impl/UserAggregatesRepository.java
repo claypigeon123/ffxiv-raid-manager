@@ -1,17 +1,11 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
-import com.mongodb.client.model.UpdateOneModel;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.UserAggregate;
 import lombok.RequiredArgsConstructor;
-import org.bson.Document;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.FindAndReplaceOptions;
-import org.springframework.data.mongodb.core.convert.UpdateMapper;
-import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

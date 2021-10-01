@@ -1,6 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.websocket.Event;
+import com.cp.raidmanager.raidmanagerdomain.websocket.Event;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller.NotificationsController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

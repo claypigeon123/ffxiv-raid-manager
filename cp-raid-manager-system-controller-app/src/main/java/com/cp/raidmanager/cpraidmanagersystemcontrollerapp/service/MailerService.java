@@ -1,8 +1,8 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.config.properties.SecurityProperties;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.RaidAggregate;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.UserAggregate;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

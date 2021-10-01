@@ -1,15 +1,14 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ChangeUserDetailsRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RegisterRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.RegisterResponse;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.UserAggregate;
+import com.cp.raidmanager.raidmanagerdomain.request.ChangeUserDetailsRequest;
+import com.cp.raidmanager.raidmanagerdomain.request.RegisterRequest;
+import com.cp.raidmanager.raidmanagerdomain.response.RegisterResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;

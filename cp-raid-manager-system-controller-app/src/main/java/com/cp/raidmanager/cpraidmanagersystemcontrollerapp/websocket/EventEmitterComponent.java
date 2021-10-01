@@ -1,6 +1,6 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.websocket;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.websocket.Event;
+import com.cp.raidmanager.raidmanagerdomain.websocket.Event;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.base.RaidManagerSystemControllerException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.websocket.EventType.*;
+import static com.cp.raidmanager.raidmanagerdomain.websocket.EventType.*;
 
 @Component
 @RequiredArgsConstructor

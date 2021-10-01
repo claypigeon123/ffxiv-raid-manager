@@ -1,7 +1,7 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.AuthRequest;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.UserAggregate;
+import com.cp.raidmanager.raidmanagerdomain.request.AuthRequest;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.PublicService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

@@ -1,10 +1,10 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl.UserAggregatesRepository;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.UserAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.ChangeUserDetailsRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.RegisterRequest;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.RegisterResponse;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.UserAggregate;
+import com.cp.raidmanager.raidmanagerdomain.request.ChangeUserDetailsRequest;
+import com.cp.raidmanager.raidmanagerdomain.request.RegisterRequest;
+import com.cp.raidmanager.raidmanagerdomain.response.RegisterResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.AggregateNotFoundException;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;

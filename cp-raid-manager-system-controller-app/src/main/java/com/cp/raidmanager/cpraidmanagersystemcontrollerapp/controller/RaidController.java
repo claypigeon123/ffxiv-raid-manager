@@ -1,9 +1,9 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.controller;
 
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.request.*;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidResponse;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.response.GetRaidsResponse;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.RaidAggregate;
+import com.cp.raidmanager.raidmanagerdomain.request.*;
+import com.cp.raidmanager.raidmanagerdomain.response.GetRaidResponse;
+import com.cp.raidmanager.raidmanagerdomain.response.GetRaidsResponse;
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.service.RaidService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

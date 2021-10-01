@@ -1,7 +1,7 @@
 package com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.impl;
 
 import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.dao.AggregatesReactiveRepository;
-import com.cp.raidmanager.cpraidmanagersystemcontrollerapp.domain.aggregate.RaidAggregate;
+import com.cp.raidmanager.raidmanagerdomain.aggregate.RaidAggregate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.FindAndReplaceOptions;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
