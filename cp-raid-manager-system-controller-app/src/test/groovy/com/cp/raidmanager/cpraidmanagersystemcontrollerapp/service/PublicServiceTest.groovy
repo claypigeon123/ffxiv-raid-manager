@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter
 import static org.springframework.data.mongodb.core.query.Criteria.*
 import static org.springframework.data.mongodb.core.query.Query.*
 
-class PublicServiceTests extends Specification {
+class PublicServiceTest extends Specification {
     private static final String AUTH_HEADER = "Authorization"
     private static final String AUTH_PREFIX = "Bearer "
     private static final int EXPIRATION = 3600

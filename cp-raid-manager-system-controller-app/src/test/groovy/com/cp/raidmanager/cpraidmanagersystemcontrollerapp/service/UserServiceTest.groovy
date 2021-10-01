@@ -22,7 +22,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
-class UserServiceTests extends Specification {
+class UserServiceTest extends Specification {
     // Class to test
     UserService service
 
